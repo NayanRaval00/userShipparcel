@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateWearHouseRequest;
-use App\Models\WearHouse;
+use App\Http\Requests\CreateWarehouseRequest;
+use App\Models\Warehouse;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -16,7 +15,7 @@ class WareHouseController extends Controller
         return view('users.warehouse.create');
     }
 
-    public function create(CreateWearHouseRequest $request)
+    public function create(CreateWarehouseRequest $request)
     {
         $access_key = env('PARCELX_ACCESS_KEY');
         $secret_key = env('PARCELX_SECRET_KEY');
@@ -40,7 +39,7 @@ class WareHouseController extends Controller
             if ($response->successful()) {
                 $responseData = $response->json();
                 Log::info('API Response:', $responseData);
-                $warehouse = WearHouse::create($request->validated());
+                $warehouse = Warehouse::create($request->validated());
 
                 if (isset($responseData['data']['pick_address_id'])) {
                     $warehouse->update([

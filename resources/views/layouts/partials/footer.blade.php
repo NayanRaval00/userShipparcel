@@ -4,7 +4,7 @@
         <div class="text-dark order-2 order-md-1">
             <span class="text-muted font-weight-bold mr-2">{{date('Y')}} ©</span>
             <a href="http://keenthemes.com/metronic" target="_blank"
-                class="text-dark-75 text-hover-primary">Keenthemes</a>
+                class="text-dark-75 text-hover-primary">Shiparcel</a>
         </div>
         <div class="nav nav-dark">
             <a href="http://keenthemes.com/metronic" target="_blank"

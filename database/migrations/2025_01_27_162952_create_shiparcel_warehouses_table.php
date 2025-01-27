@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('wear_houses', function (Blueprint $table) {
+        Schema::create('shiparcel_warehouses', function (Blueprint $table) {
             $table->id();
             $table->string('address_title')->nullable();
             $table->string('sender_name')->nullable();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('wear_houses');
+        Schema::dropIfExists('shiparcel_warehouses');
     }
 };
