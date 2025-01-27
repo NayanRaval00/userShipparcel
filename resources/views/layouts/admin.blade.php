@@ -12,6 +12,9 @@
     <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css">
+
+    <link rel="shortcut icon" href="{{asset('assets/media/logos/shiparcel_logo.png')}}" />
+
     @stack('styles')
 </head>
 
