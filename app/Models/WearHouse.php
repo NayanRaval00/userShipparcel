@@ -15,5 +15,6 @@ class WearHouse extends Model
         'full_address',
         'phone',
         'pincode',
+        'pick_address_id'
     ];
 }

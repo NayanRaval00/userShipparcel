@@ -39,10 +39,14 @@ class WareHouseController extends Controller
 
             if ($response->successful()) {
                 $responseData = $response->json();
-
                 Log::info('API Response:', $responseData);
-
                 $warehouse = WearHouse::create($request->validated());
+
+                if (isset($responseData['data']['pick_address_id'])) {
+                    $warehouse->update([
+                        'pick_address_id' => $responseData['data']['pick_address_id'],
+                    ]);
+                }
 
                 return redirect()->back()->with('success', 'Warehouse created successfully!');
             } else {
