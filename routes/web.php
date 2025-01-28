@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\WareHouseController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,9 @@ Route::middleware(['auth'])->group(function () {
     /**Warehouse creation */
     Route::get('warehouse/create', [WareHouseController::class, 'show'])->name('create-warehouse');
     Route::post('/create-warehouse', [WareHouseController::class, 'create'])->name('create.warehouse');
+
+    /**Order Creation */
+    Route::get('order/create', [OrderController::class, 'show'])->name('create-order');
 });
 
 
