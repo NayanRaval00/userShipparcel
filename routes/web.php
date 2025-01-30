@@ -7,7 +7,7 @@ use App\Http\Controllers\WareHouseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 // routes/web.php
@@ -22,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
 
     /**Order Creation */
     Route::get('order/create', [OrderController::class, 'show'])->name('create-order');
+    Route::post('create-order', [OrderController::class, 'create'])->name('create.order');
 });
 
 
