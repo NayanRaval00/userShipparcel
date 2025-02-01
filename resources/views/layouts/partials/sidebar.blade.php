@@ -11,16 +11,11 @@
     </div>
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
-            <li class="dropdown">
-                <a href="javascript:void(0)">
+            <li class="">
+                <a href="{{route('dashboard')}}">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
                 </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href=""><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> AI</a>
-                    </li>
-                </ul>
             </li>
             <li class="sidebar-menu-group-title">Application</li>
             <li>
@@ -33,6 +28,13 @@
                 <a href="{{route('create-order')}}">
                     <iconify-icon icon="mage:email" class="menu-icon"></iconify-icon>
                     <span>Create Order</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-group-title">Other</li>
+            <li>
+                <a href="{{route('wallet')}}">
+                    <iconify-icon icon="mage:email" class="menu-icon"></iconify-icon>
+                    <span>Billing</span>
                 </a>
             </li>
         </ul>
