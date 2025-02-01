@@ -87,7 +87,7 @@
 
                                                     <div class="d-flex align-items-center">
                                                         <!-- <p class="fs-12 mb-0 fw-medium">Don’t have an account yet?</p> -->
-                                                        <!-- <a class="text-primary fw-bolder ms-2" href="../main/authentication-register2.html">Sign Up Now</a> -->
+                                                        <!-- <a class="text-primary fw-bolder ms-2" href="">Sign Up Now</a> -->
                                                     </div>
                                                 </form>
                                             </div>

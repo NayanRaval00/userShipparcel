@@ -4,143 +4,733 @@
 @section('title', 'Dashboard')
 
 @section('content')
+<div class="dashboard-main-body">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+        <h6 class="fw-semibold mb-0">Dashboard</h6>
+        <ul class="d-flex align-items-center gap-2">
+          <li class="fw-medium">
+            <a href="" class="d-flex align-items-center gap-1 hover-text-primary">
+              <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
+              Dashboard
+            </a>
+          </li>
+          <li>-</li>
+          <li class="fw-medium">AI</li>
+        </ul>
+      </div>
 
-<div>
-    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-
-        <div class="d-flex flex-column-fluid">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card card-custom bg-gray-100 card-stretch gutter-b">
-                            <div class="card-header border-0 bg-danger py-5">
-                                <h3 class="card-title font-weight-bolder text-white">Sales Stat</h3>
-
-                            </div>
-                            <div class="card-body p-0 position-relative overflow-hidden">
-                                <!--begin::Chart-->
-                                <div id="kt_mixed_widget_1_chart" class="card-rounded-bottom bg-danger"
-                                    style="height: 200px"></div>
-                                <!--end::Chart-->
-                                <!--begin::Stats-->
-                                <div class="card-spacer mt-n25">
-                                    <!--begin::Row-->
-                                    <div class="row m-0">
-                                        <div class="col bg-light-warning px-6 py-8 rounded-xl mr-7 mb-7">
-                                            <span
-                                                class="svg-icon svg-icon-3x svg-icon-warning d-block my-2">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Media/Equalizer.svg-->
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                    height="24px" viewBox="0 0 24 24" version="1.1">
-                                                    <g stroke="none" stroke-width="1" fill="none"
-                                                        fill-rule="evenodd">
-                                                        <rect x="0" y="0" width="24" height="24" />
-                                                        <rect fill="#000000" opacity="0.3" x="13" y="4"
-                                                            width="3" height="16" rx="1.5" />
-                                                        <rect fill="#000000" x="8" y="9" width="3"
-                                                            height="11" rx="1.5" />
-                                                        <rect fill="#000000" x="18" y="11" width="3"
-                                                            height="9" rx="1.5" />
-                                                        <rect fill="#000000" x="3" y="13" width="3"
-                                                            height="7" rx="1.5" />
-                                                    </g>
-                                                </svg>
-                                                <!--end::Svg Icon-->
-                                            </span>
-                                            <a href="#"
-                                                class="text-warning font-weight-bold font-size-h6">Weekly
-                                                Sales</a>
-                                        </div>
-                                        <div class="col bg-light-primary px-6 py-8 rounded-xl mb-7">
-                                            <span
-                                                class="svg-icon svg-icon-3x svg-icon-primary d-block my-2">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Add-user.svg-->
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                    height="24px" viewBox="0 0 24 24" version="1.1">
-                                                    <g stroke="none" stroke-width="1" fill="none"
-                                                        fill-rule="evenodd">
-                                                        <polygon points="0 0 24 0 24 24 0 24" />
-                                                        <path
-                                                            d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z"
-                                                            fill="#000000" fill-rule="nonzero"
-                                                            opacity="0.3" />
-                                                        <path
-                                                            d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z"
-                                                            fill="#000000" fill-rule="nonzero" />
-                                                    </g>
-                                                </svg>
-                                                <!--end::Svg Icon-->
-                                            </span>
-                                            <a href="#"
-                                                class="text-primary font-weight-bold font-size-h6 mt-2">New
-                                                Users</a>
-                                        </div>
-                                    </div>
-                                    <!--end::Row-->
-                                    <!--begin::Row-->
-                                    <div class="row m-0">
-                                        <div class="col bg-light-danger px-6 py-8 rounded-xl mr-7">
-                                            <span class="svg-icon svg-icon-3x svg-icon-danger d-block my-2">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                    height="24px" viewBox="0 0 24 24" version="1.1">
-                                                    <g stroke="none" stroke-width="1" fill="none"
-                                                        fill-rule="evenodd">
-                                                        <polygon points="0 0 24 0 24 24 0 24" />
-                                                        <path
-                                                            d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z"
-                                                            fill="#000000" fill-rule="nonzero" />
-                                                        <path
-                                                            d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z"
-                                                            fill="#000000" opacity="0.3" />
-                                                    </g>
-                                                </svg>
-                                                <!--end::Svg Icon-->
-                                            </span>
-                                            <a href="#"
-                                                class="text-danger font-weight-bold font-size-h6 mt-2">Item
-                                                Orders</a>
-                                        </div>
-                                        <div class="col bg-light-success px-6 py-8 rounded-xl">
-                                            <span
-                                                class="svg-icon svg-icon-3x svg-icon-success d-block my-2">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Urgent-mail.svg-->
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                    height="24px" viewBox="0 0 24 24" version="1.1">
-                                                    <g stroke="none" stroke-width="1" fill="none"
-                                                        fill-rule="evenodd">
-                                                        <rect x="0" y="0" width="24" height="24" />
-                                                        <path
-                                                            d="M12.7037037,14 L15.6666667,10 L13.4444444,10 L13.4444444,6 L9,12 L11.2222222,12 L11.2222222,14 L6,14 C5.44771525,14 5,13.5522847 5,13 L5,3 C5,2.44771525 5.44771525,2 6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,13 C19,13.5522847 18.5522847,14 18,14 L12.7037037,14 Z"
-                                                            fill="#000000" opacity="0.3" />
-                                                        <path
-                                                            d="M9.80428954,10.9142091 L9,12 L11.2222222,12 L11.2222222,16 L15.6666667,10 L15.4615385,10 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 L9.80428954,10.9142091 Z"
-                                                            fill="#000000" />
-                                                    </g>
-                                                </svg>
-                                                <!--end::Svg Icon-->
-                                            </span>
-                                            <a href="#"
-                                                class="text-success font-weight-bold font-size-h6 mt-2">Bug
-                                                Reports</a>
-                                        </div>
-                                    </div>
-                                    <!--end::Row-->
-                                </div>
-                                <!--end::Stats-->
-                            </div>
-                        </div>
-                    </div>
-
+      <div class="row row-cols-xxxl-5 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4">
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-start-1 h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-primary-light mb-1">Total Users</p>
+                  <h6 class="mb-0">20,000</h6>
                 </div>
+                <div class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="gridicons:multiple-users" class="text-white text-2xl mb-0"></iconify-icon>
+                </div>
+              </div>
+              <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
+                <span class="d-inline-flex align-items-center gap-1 text-success-main"><iconify-icon icon="bxs:up-arrow"
+                    class="text-xs"></iconify-icon> +5000</span>
+                Last 30 days users
+              </p>
+            </div>
+          </div><!-- card end -->
+        </div>
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-start-2 h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-primary-light mb-1">Total Subscription</p>
+                  <h6 class="mb-0">15,000</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-purple rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="fa-solid:award" class="text-white text-2xl mb-0"></iconify-icon>
+                </div>
+              </div>
+              <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
+                <span class="d-inline-flex align-items-center gap-1 text-danger-main"><iconify-icon
+                    icon="bxs:down-arrow" class="text-xs"></iconify-icon> -800</span>
+                Last 30 days subscription
+              </p>
+            </div>
+          </div><!-- card end -->
+        </div>
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-start-3 h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-primary-light mb-1">Total Free Users</p>
+                  <h6 class="mb-0">5,000</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-info rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="fluent:people-20-filled" class="text-white text-2xl mb-0"></iconify-icon>
+                </div>
+              </div>
+              <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
+                <span class="d-inline-flex align-items-center gap-1 text-success-main"><iconify-icon icon="bxs:up-arrow"
+                    class="text-xs"></iconify-icon> +200</span>
+                Last 30 days users
+              </p>
+            </div>
+          </div><!-- card end -->
+        </div>
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-start-4 h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-primary-light mb-1">Total Income</p>
+                  <h6 class="mb-0">$42,000</h6>
+                </div>
+                <div
+                  class="w-50-px h-50-px bg-success-main rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="solar:wallet-bold" class="text-white text-2xl mb-0"></iconify-icon>
+                </div>
+              </div>
+              <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
+                <span class="d-inline-flex align-items-center gap-1 text-success-main"><iconify-icon icon="bxs:up-arrow"
+                    class="text-xs"></iconify-icon> +$20,000</span>
+                Last 30 days income
+              </p>
+            </div>
+          </div><!-- card end -->
+        </div>
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-start-5 h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-primary-light mb-1">Total Expense</p>
+                  <h6 class="mb-0">$30,000</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-red rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="fa6-solid:file-invoice-dollar" class="text-white text-2xl mb-0"></iconify-icon>
+                </div>
+              </div>
+              <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
+                <span class="d-inline-flex align-items-center gap-1 text-success-main"><iconify-icon icon="bxs:up-arrow"
+                    class="text-xs"></iconify-icon> +$5,000</span>
+                Last 30 days expense
+              </p>
+            </div>
+          </div><!-- card end -->
+        </div>
+      </div>
+
+      <div class="row gy-4 mt-1">
+        <div class="col-xxl-6 col-xl-12">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex flex-wrap align-items-center justify-content-between">
+                <h6 class="text-lg mb-0">Sales Statistic</h6>
+                <select class="form-select bg-base form-select-sm w-auto">
+                  <option>Yearly</option>
+                  <option>Monthly</option>
+                  <option>Weekly</option>
+                  <option>Today</option>
+                </select>
+              </div>
+              <div class="d-flex flex-wrap align-items-center gap-2 mt-8">
+                <h6 class="mb-0">$27,200</h6>
+                <span
+                  class="text-sm fw-semibold rounded-pill bg-success-focus text-success-main border br-success px-8 py-4 line-height-1 d-flex align-items-center gap-1">
+                  10% <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>
+                </span>
+                <span class="text-xs fw-medium">+ $1500 Per Day</span>
+              </div>
+              <div id="chart" class="pt-28 apexcharts-tooltip-style-1"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xxl-3 col-xl-6">
+          <div class="card h-100 radius-8 border">
+            <div class="card-body p-24">
+              <h6 class="mb-12 fw-semibold text-lg mb-16">Total Subscriber</h6>
+              <div class="d-flex align-items-center gap-2 mb-20">
+                <h6 class="fw-semibold mb-0">5,000</h6>
+                <p class="text-sm mb-0">
+                  <span
+                    class="bg-danger-focus border br-danger px-8 py-2 rounded-pill fw-semibold text-danger-main text-sm d-inline-flex align-items-center gap-1">
+                    10%
+                    <iconify-icon icon="iconamoon:arrow-down-2-fill" class="icon"></iconify-icon>
+                  </span>
+                  - 20 Per Day
+                </p>
+              </div>
+
+              <div id="barChart" class="barChart"></div>
 
             </div>
+          </div>
         </div>
+        <div class="col-xxl-3 col-xl-6">
+          <div class="card h-100 radius-8 border-0 overflow-hidden">
+            <div class="card-body p-24">
+              <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
+                <h6 class="mb-2 fw-bold text-lg">Users Overview</h6>
+                <div class="">
+                  <select class="form-select form-select-sm w-auto bg-base border text-secondary-light">
+                    <option>Today</option>
+                    <option>Weekly</option>
+                    <option>Monthly</option>
+                    <option>Yearly</option>
+                  </select>
+                </div>
+              </div>
+
+
+              <div id="userOverviewDonutChart" class="apexcharts-tooltip-z-none"></div>
+
+              <ul class="d-flex flex-wrap align-items-center justify-content-between mt-3 gap-3">
+                <li class="d-flex align-items-center gap-2">
+                  <span class="w-12-px h-12-px radius-2 bg-primary-600"></span>
+                  <span class="text-secondary-light text-sm fw-normal">New:
+                    <span class="text-primary-light fw-semibold">500</span>
+                  </span>
+                </li>
+                <li class="d-flex align-items-center gap-2">
+                  <span class="w-12-px h-12-px radius-2 bg-yellow"></span>
+                  <span class="text-secondary-light text-sm fw-normal">Subscribed:
+                    <span class="text-primary-light fw-semibold">300</span>
+                  </span>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-xxl-9 col-xl-12">
+          <div class="card h-100">
+            <div class="card-body p-24">
+
+              <div class="d-flex flex-wrap align-items-center gap-1 justify-content-between mb-16">
+                <ul class="nav border-gradient-tab nav-pills mb-0" id="pills-tab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link d-flex align-items-center active" id="pills-to-do-list-tab"
+                      data-bs-toggle="pill" data-bs-target="#pills-to-do-list" type="button" role="tab"
+                      aria-controls="pills-to-do-list" aria-selected="true">
+                      Latest Registered
+                      <span
+                        class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">35</span>
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link d-flex align-items-center" id="pills-recent-leads-tab" data-bs-toggle="pill"
+                      data-bs-target="#pills-recent-leads" type="button" role="tab" aria-controls="pills-recent-leads"
+                      aria-selected="false" tabindex="-1">
+                      Latest Subscribe
+                      <span
+                        class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">35</span>
+                    </button>
+                  </li>
+                </ul>
+                <a href="javascript:void(0)"
+                  class="text-primary-600 hover-text-primary d-flex align-items-center gap-1">
+                  View All
+                  <iconify-icon icon="solar:alt-arrow-right-linear" class="icon"></iconify-icon>
+                </a>
+              </div>
+
+              <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-to-do-list" role="tabpanel"
+                  aria-labelledby="pills-to-do-list-tab" tabindex="0">
+                  <div class="table-responsive scroll-sm">
+                    <table class="table bordered-table sm-table mb-0">
+                      <thead>
+                        <tr>
+                          <th scope="col">Users </th>
+                          <th scope="col">Registered On</th>
+                          <th scope="col">Plan</th>
+                          <th scope="col" class="text-center">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <img src="assets/images/users/user1.png" alt=""
+                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                              <div class="flex-grow-1">
+                                <h6 class="text-md mb-0 fw-medium">Dianne Russell</h6>
+                                <span class="text-sm text-secondary-light fw-medium">redaniel@gmail.com</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>27 Mar 2024</td>
+                          <td>Free</td>
+                          <td class="text-center">
+                            <span
+                              class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <img src="assets/images/users/user2.png" alt=""
+                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                              <div class="flex-grow-1">
+                                <h6 class="text-md mb-0 fw-medium">Wade Warren</h6>
+                                <span class="text-sm text-secondary-light fw-medium">xterris@gmail.com</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>27 Mar 2024</td>
+                          <td>Basic</td>
+                          <td class="text-center">
+                            <span
+                              class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <img src="assets/images/users/user3.png" alt=""
+                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                              <div class="flex-grow-1">
+                                <h6 class="text-md mb-0 fw-medium">Albert Flores</h6>
+                                <span class="text-sm text-secondary-light fw-medium">seannand@mail.ru</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>27 Mar 2024</td>
+                          <td>Standard</td>
+                          <td class="text-center">
+                            <span
+                              class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <img src="assets/images/users/user4.png" alt=""
+                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                              <div class="flex-grow-1">
+                                <h6 class="text-md mb-0 fw-medium">Bessie Cooper </h6>
+                                <span class="text-sm text-secondary-light fw-medium">igerrin@gmail.com</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>27 Mar 2024</td>
+                          <td>Business</td>
+                          <td class="text-center">
+                            <span
+                              class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <img src="assets/images/users/user5.png" alt=""
+                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                              <div class="flex-grow-1">
+                                <h6 class="text-md mb-0 fw-medium">Arlene McCoy</h6>
+                                <span class="text-sm text-secondary-light fw-medium">fellora@mail.ru</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>27 Mar 2024</td>
+                          <td>Enterprise </td>
+                          <td class="text-center">
+                            <span
+                              class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="pills-recent-leads" role="tabpanel"
+                  aria-labelledby="pills-recent-leads-tab" tabindex="0">
+                  <div class="table-responsive scroll-sm">
+                    <table class="table bordered-table sm-table mb-0">
+                      <thead>
+                        <tr>
+                          <th scope="col">Users </th>
+                          <th scope="col">Registered On</th>
+                          <th scope="col">Plan</th>
+                          <th scope="col" class="text-center">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <img src="assets/images/users/user1.png" alt=""
+                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                              <div class="flex-grow-1">
+                                <h6 class="text-md mb-0 fw-medium">Dianne Russell</h6>
+                                <span class="text-sm text-secondary-light fw-medium">redaniel@gmail.com</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>27 Mar 2024</td>
+                          <td>Free</td>
+                          <td class="text-center">
+                            <span
+                              class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <img src="assets/images/users/user2.png" alt=""
+                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                              <div class="flex-grow-1">
+                                <h6 class="text-md mb-0 fw-medium">Wade Warren</h6>
+                                <span class="text-sm text-secondary-light fw-medium">xterris@gmail.com</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>27 Mar 2024</td>
+                          <td>Basic</td>
+                          <td class="text-center">
+                            <span
+                              class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <img src="assets/images/users/user3.png" alt=""
+                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                              <div class="flex-grow-1">
+                                <h6 class="text-md mb-0 fw-medium">Albert Flores</h6>
+                                <span class="text-sm text-secondary-light fw-medium">seannand@mail.ru</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>27 Mar 2024</td>
+                          <td>Standard</td>
+                          <td class="text-center">
+                            <span
+                              class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <img src="assets/images/users/user4.png" alt=""
+                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                              <div class="flex-grow-1">
+                                <h6 class="text-md mb-0 fw-medium">Bessie Cooper </h6>
+                                <span class="text-sm text-secondary-light fw-medium">igerrin@gmail.com</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>27 Mar 2024</td>
+                          <td>Business</td>
+                          <td class="text-center">
+                            <span
+                              class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <img src="assets/images/users/user5.png" alt=""
+                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                              <div class="flex-grow-1">
+                                <h6 class="text-md mb-0 fw-medium">Arlene McCoy</h6>
+                                <span class="text-sm text-secondary-light fw-medium">fellora@mail.ru</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>27 Mar 2024</td>
+                          <td>Enterprise </td>
+                          <td class="text-center">
+                            <span
+                              class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xxl-3 col-xl-12">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
+                <h6 class="mb-2 fw-bold text-lg mb-0">Top Performer</h6>
+                <a href="javascript:void(0)"
+                  class="text-primary-600 hover-text-primary d-flex align-items-center gap-1">
+                  View All
+                  <iconify-icon icon="solar:alt-arrow-right-linear" class="icon"></iconify-icon>
+                </a>
+              </div>
+
+              <div class="mt-32">
+
+                <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
+                  <div class="d-flex align-items-center">
+                    <img src="assets/images/users/user1.png" alt=""
+                      class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                    <div class="flex-grow-1">
+                      <h6 class="text-md mb-0 fw-medium">Dianne Russell</h6>
+                      <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
+                    </div>
+                  </div>
+                  <span class="text-primary-light text-md fw-medium">$20</span>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
+                  <div class="d-flex align-items-center">
+                    <img src="assets/images/users/user2.png" alt=""
+                      class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                    <div class="flex-grow-1">
+                      <h6 class="text-md mb-0 fw-medium">Wade Warren</h6>
+                      <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
+                    </div>
+                  </div>
+                  <span class="text-primary-light text-md fw-medium">$20</span>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
+                  <div class="d-flex align-items-center">
+                    <img src="assets/images/users/user3.png" alt=""
+                      class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                    <div class="flex-grow-1">
+                      <h6 class="text-md mb-0 fw-medium">Albert Flores</h6>
+                      <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
+                    </div>
+                  </div>
+                  <span class="text-primary-light text-md fw-medium">$30</span>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
+                  <div class="d-flex align-items-center">
+                    <img src="assets/images/users/user4.png" alt=""
+                      class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                    <div class="flex-grow-1">
+                      <h6 class="text-md mb-0 fw-medium">Bessie Cooper</h6>
+                      <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
+                    </div>
+                  </div>
+                  <span class="text-primary-light text-md fw-medium">$40</span>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
+                  <div class="d-flex align-items-center">
+                    <img src="assets/images/users/user5.png" alt=""
+                      class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                    <div class="flex-grow-1">
+                      <h6 class="text-md mb-0 fw-medium">Arlene McCoy</h6>
+                      <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
+                    </div>
+                  </div>
+                  <span class="text-primary-light text-md fw-medium">$10</span>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between gap-3">
+                  <div class="d-flex align-items-center">
+                    <img src="assets/images/users/user1.png" alt=""
+                      class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                    <div class="flex-grow-1">
+                      <h6 class="text-md mb-0 fw-medium">Arlene McCoy</h6>
+                      <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
+                    </div>
+                  </div>
+                  <span class="text-primary-light text-md fw-medium">$10</span>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-xxl-6 col-xl-12">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between mb-20">
+                <h6 class="mb-2 fw-bold text-lg mb-0">Top Countries</h6>
+                <select class="form-select form-select-sm w-auto bg-base border text-secondary-light">
+                  <option>Today</option>
+                  <option>Weekly</option>
+                  <option>Monthly</option>
+                  <option>Yearly</option>
+                </select>
+              </div>
+
+              <div class="row gy-4">
+                <div class="col-lg-6">
+                  <div id="world-map" class="h-100 border radius-8"></div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="h-100 border p-16 pe-0 radius-8">
+                    <div class="max-h-266-px overflow-y-auto scroll-sm pe-16">
+                      <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
+                        <div class="d-flex align-items-center w-100">
+                          <img src="assets/images/flags/flag1.png" alt=""
+                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
+                          <div class="flex-grow-1">
+                            <h6 class="text-sm mb-0">USA</h6>
+                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 w-100">
+                          <div class="w-100 max-w-66 ms-auto">
+                            <div class="progress progress-sm rounded-pill" role="progressbar"
+                              aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                              <div class="progress-bar bg-primary-600 rounded-pill" style="width: 80%;"></div>
+                            </div>
+                          </div>
+                          <span class="text-secondary-light font-xs fw-semibold">80%</span>
+                        </div>
+                      </div>
+
+                      <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
+                        <div class="d-flex align-items-center w-100">
+                          <img src="assets/images/flags/flag2.png" alt=""
+                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
+                          <div class="flex-grow-1">
+                            <h6 class="text-sm mb-0">Japan</h6>
+                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 w-100">
+                          <div class="w-100 max-w-66 ms-auto">
+                            <div class="progress progress-sm rounded-pill" role="progressbar"
+                              aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                              <div class="progress-bar bg-orange rounded-pill" style="width: 60%;"></div>
+                            </div>
+                          </div>
+                          <span class="text-secondary-light font-xs fw-semibold">60%</span>
+                        </div>
+                      </div>
+
+                      <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
+                        <div class="d-flex align-items-center w-100">
+                          <img src="assets/images/flags/flag3.png" alt=""
+                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
+                          <div class="flex-grow-1">
+                            <h6 class="text-sm mb-0">France</h6>
+                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 w-100">
+                          <div class="w-100 max-w-66 ms-auto">
+                            <div class="progress progress-sm rounded-pill" role="progressbar"
+                              aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                              <div class="progress-bar bg-yellow rounded-pill" style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <span class="text-secondary-light font-xs fw-semibold">49%</span>
+                        </div>
+                      </div>
+
+                      <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
+                        <div class="d-flex align-items-center w-100">
+                          <img src="assets/images/flags/flag4.png" alt=""
+                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
+                          <div class="flex-grow-1">
+                            <h6 class="text-sm mb-0">Germany</h6>
+                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 w-100">
+                          <div class="w-100 max-w-66 ms-auto">
+                            <div class="progress progress-sm rounded-pill" role="progressbar"
+                              aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                              <div class="progress-bar bg-success-main rounded-pill" style="width: 100%;"></div>
+                            </div>
+                          </div>
+                          <span class="text-secondary-light font-xs fw-semibold">100%</span>
+                        </div>
+                      </div>
+
+                      <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
+                        <div class="d-flex align-items-center w-100">
+                          <img src="assets/images/flags/flag5.png" alt=""
+                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
+                          <div class="flex-grow-1">
+                            <h6 class="text-sm mb-0">South Korea</h6>
+                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 w-100">
+                          <div class="w-100 max-w-66 ms-auto">
+                            <div class="progress progress-sm rounded-pill" role="progressbar"
+                              aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                              <div class="progress-bar bg-info-main rounded-pill" style="width: 30%;"></div>
+                            </div>
+                          </div>
+                          <span class="text-secondary-light font-xs fw-semibold">30%</span>
+                        </div>
+                      </div>
+                      <div class="d-flex align-items-center justify-content-between gap-3">
+                        <div class="d-flex align-items-center w-100">
+                          <img src="assets/images/flags/flag1.png" alt=""
+                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
+                          <div class="flex-grow-1">
+                            <h6 class="text-sm mb-0">USA</h6>
+                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 w-100">
+                          <div class="w-100 max-w-66 ms-auto">
+                            <div class="progress progress-sm rounded-pill" role="progressbar"
+                              aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                              <div class="progress-bar bg-primary-600 rounded-pill" style="width: 80%;"></div>
+                            </div>
+                          </div>
+                          <span class="text-secondary-light font-xs fw-semibold">80%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xxl-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
+                <h6 class="mb-2 fw-bold text-lg mb-0">Generated Content</h6>
+                <select class="form-select form-select-sm w-auto bg-base border text-secondary-light">
+                  <option>Today</option>
+                  <option>Weekly</option>
+                  <option>Monthly</option>
+                  <option>Yearly</option>
+                </select>
+              </div>
+
+              <ul class="d-flex flex-wrap align-items-center mt-3 gap-3">
+                <li class="d-flex align-items-center gap-2">
+                  <span class="w-12-px h-12-px rounded-circle bg-primary-600"></span>
+                  <span class="text-secondary-light text-sm fw-semibold">Word:
+                    <span class="text-primary-light fw-bold">500</span>
+                  </span>
+                </li>
+                <li class="d-flex align-items-center gap-2">
+                  <span class="w-12-px h-12-px rounded-circle bg-yellow"></span>
+                  <span class="text-secondary-light text-sm fw-semibold">Image:
+                    <span class="text-primary-light fw-bold">300</span>
+                  </span>
+                </li>
+              </ul>
+
+              <div class="mt-40">
+                <div id="paymentStatusChart" class="margin-16-minus"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
 
 @endsection

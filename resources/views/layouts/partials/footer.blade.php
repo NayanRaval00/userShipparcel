@@ -1,20 +1,10 @@
-<div class="footer bg-white py-4 d-flex flex-lg-column" id="kt_footer">
-    <div
-        class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
-        <div class="text-dark order-2 order-md-1">
-            <span class="text-muted font-weight-bold mr-2">{{date('Y')}} ©</span>
-            <a href="http://keenthemes.com/metronic" target="_blank"
-                class="text-dark-75 text-hover-primary">Shiparcel</a>
+<footer class="d-footer">
+    <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+            <p class="mb-0">© {{date('Y')}} Shiparcel. All Rights Reserved.</p>
         </div>
-        <div class="nav nav-dark">
-            <a href="http://keenthemes.com/metronic" target="_blank"
-                class="nav-link pl-0 pr-5">About</a>
-            <a href="http://keenthemes.com/metronic" target="_blank" class="nav-link pl-0 pr-5">Team</a>
-            <a href="http://keenthemes.com/metronic" target="_blank"
-                class="nav-link pl-0 pr-0">Contact</a>
+        <div class="col-auto">
+            <!-- <p class="mb-0">Made by <span class="text-primary-600">wowtheme7</span></p> -->
         </div>
     </div>
-</div>
-</div>
-</div>
-</div>
+</footer>

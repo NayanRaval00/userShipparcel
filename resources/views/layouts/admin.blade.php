@@ -7,95 +7,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@yield('title', 'Admin Panel')</title>
     <!-- Fonts and Global Styles -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css">
-
     <link rel="shortcut icon" href="{{asset('assets/media/logos/shiparcel_logo.png')}}" />
 
+    <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css')}}">
+    <!-- BootStrap css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/bootstrap.min.css')}}">
+    <!-- Apex Chart css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/apexcharts.css')}}">
+    <!-- Data Table css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/dataTables.min.css')}}">
+    <!-- Text Editor css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/editor-katex.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/editor.atom-one-dark.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/editor.quill.snow.css')}}">
+    <!-- Date picker css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/flatpickr.min.css')}}">
+    <!-- Calendar css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/full-calendar.css')}}">
+    <!-- Vector Map css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/jquery-jvectormap-2.0.5.css')}}">
+    <!-- Popup css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/magnific-popup.css')}}">
+    <!-- Slick Slider css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/slick.css')}}">
+    <!-- prism css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/prism.css')}}">
+    <!-- file upload css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/file-upload.css')}}">
+
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/audioplayer.css')}}">
+    <!-- main css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
     @stack('styles')
 </head>
 
-<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
-
-    @include('layouts.partials.header')
+<body>
 
 
-    <div class="content-wrapper">
+
+    @include('layouts.partials.sidebar')
+
+    <main class="dashboard-main">
+        @include('layouts.partials.header')
+
         @yield('content')
+        @include('layouts.partials.footer')
 
 
-    </div>
+    </main>
 
-    @include('layouts.partials.footer')
-    <script>
-        var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
-    </script>
-    <script>
-        var KTAppSettings = {
-            "breakpoints": {
-                "sm": 576,
-                "md": 768,
-                "lg": 992,
-                "xl": 1200,
-                "xxl": 1400
-            },
-            "colors": {
-                "theme": {
-                    "base": {
-                        "white": "#ffffff",
-                        "primary": "#3699FF",
-                        "secondary": "#E5EAEE",
-                        "success": "#1BC5BD",
-                        "info": "#8950FC",
-                        "warning": "#FFA800",
-                        "danger": "#F64E60",
-                        "light": "#E4E6EF",
-                        "dark": "#181C32"
-                    },
-                    "light": {
-                        "white": "#ffffff",
-                        "primary": "#E1F0FF",
-                        "secondary": "#EBEDF3",
-                        "success": "#C9F7F5",
-                        "info": "#EEE5FF",
-                        "warning": "#FFF4DE",
-                        "danger": "#FFE2E5",
-                        "light": "#F3F6F9",
-                        "dark": "#D6D6E0"
-                    },
-                    "inverse": {
-                        "white": "#ffffff",
-                        "primary": "#ffffff",
-                        "secondary": "#3F4254",
-                        "success": "#ffffff",
-                        "info": "#ffffff",
-                        "warning": "#ffffff",
-                        "danger": "#ffffff",
-                        "light": "#464E5F",
-                        "dark": "#ffffff"
-                    }
-                },
-                "gray": {
-                    "gray-100": "#F3F6F9",
-                    "gray-200": "#EBEDF3",
-                    "gray-300": "#E4E6EF",
-                    "gray-400": "#D1D3E0",
-                    "gray-500": "#B5B5C3",
-                    "gray-600": "#7E8299",
-                    "gray-700": "#5E6278",
-                    "gray-800": "#3F4254",
-                    "gray-900": "#181C32"
-                }
-            },
-            "font-family": "Poppins"
-        };
-    </script>
-    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+
+
+
+
+    <script src="{{ asset('assets/js/lib/jquery-3.7.1.min.js') }}"></script>
+    <!-- Bootstrap js -->
+    <script src="{{ asset('assets/js/lib/bootstrap.bundle.min.js') }}"></script>
+    <!-- Apex Chart js -->
+    <script src="{{ asset('assets/js/lib/apexcharts.min.js') }}"></script>
+    <!-- Data Table js -->
+    <script src="{{ asset('assets/js/lib/dataTables.min.js') }}"></script>
+    <!-- Iconify Font js -->
+    <script src="{{ asset('assets/js/lib/iconify-icon.min.js') }}"></script>
+    <!-- jQuery UI js -->
+    <script src="{{ asset('assets/js/lib/jquery-ui.min.js') }}"></script>
+    <!-- Vector Map js -->
+    <script src="{{ asset('assets/js/lib/jquery-jvectormap-2.0.5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/lib/jquery-jvectormap-world-mill-en.js') }}"></script>
+    <!-- Popup js -->
+    <script src="{{ asset('assets/js/lib/magnifc-popup.min.js') }}"></script>
+    <!-- Slick Slider js -->
+    <script src="{{ asset('assets/js/lib/slick.min.js') }}"></script>
+    <!-- prism js -->
+    <script src="{{ asset('assets/js/lib/prism.js') }}"></script>
+    <!-- file upload js -->
+    <script src="{{ asset('assets/js/lib/file-upload.js') }}"></script>
+    <!-- audioplayer -->
+    <script src="{{ asset('assets/js/lib/audioplayer.js') }}"></script>
+
+    <!-- main js -->
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+
+    <script src="{{ asset('assets/js/homeOneChart.js') }}"></script>
+
     @stack('scripts')
 </body>
 
