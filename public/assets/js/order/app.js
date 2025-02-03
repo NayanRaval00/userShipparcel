@@ -13,39 +13,28 @@ $('#btn_add_products').click(function () {
     i++;
     var append_text = '';
 
-    append_text += '<hr>';
-    append_text += '<div class="form-group mb-4" id="row' + i + '"><div class="row"><div class="col-md-4 col-lg-4 col-xl-4 form-group">';
-    append_text += '<label for="product_name[]">Product Name<span class="text-danger">*</span></label>';
-    append_text += '<input type="text" id="product_name[]" name="product_name[]" class="form-control" placeholder="Enter product name...">';
+    append_text += '<div class="form-group mb-4" id="row' + i + '"><div class="row"><div class="col-md-4 col-lg-4 col-xl-4 mb-3">';
+    append_text += '<label for="form-label">Product Name<span class="text-danger">*</span></label>';
+    append_text += '<input type="text" id="product_name" name="product_name[]" class="form-control wizard-required" placeholder="Enter product name..." required>';
 
-    append_text += '</div><div class="col-md-4 col-lg-4 col-xl-4 mb-4 form-group"><label for="product_quantity[]">Quantity<span class="text-danger">*</span></label>';
-    append_text += '<input type="text" id="product_quantity" name="product_quantity[]" class="form-control" placeholder="Qty..." min="1">';
+    append_text += '</div><div class="col-md-2 col-lg-2 col-xl-2 mb-3"><label for="form-label">Quantity<span class="text-danger">*</span></label>';
+    append_text += '<input type="text" id="product_quantity" name="product_quantity[]" class="form-control wizard-required" placeholder="Enter product Quantity..." required>';
 
-    append_text += '</div><div class="col-md-4 col-lg-4 col-xl-4 mb-4 form-group"><label for="product_value[]">Value<span class="text-danger">*</span></label>';
-    append_text += '<input type="text" id="product_value" name="product_value[]" class="form-control valuesum" placeholder="Value..." value="0">';
+    append_text += '</div><div class="col-md-2 col-lg-2 col-xl-2 mb-3"><label for="form-label">Product Value<span class="text-danger">*</span></label>';
+    append_text += '<input type="text" id="product_value" name="product_value[]" class="form-control wizard-required" placeholder="Enter product value..." required>';
 
-    append_text += '</div><div class="col-md-4 col-lg-4 col-xl-4 form-group"><label for="product_category[]">Category</label>';
-    append_text += '<input type="text" id="product_category" name="product_category[]" class="form-control" placeholder="Product category...">';
+    append_text += '</div><div class="col-md-3 col-lg-3 col-xl-3 mb-3"><label for="form-label">Category<span class="text-danger">*</span></label>';
+    append_text += '<input type="text" id="product_category" name="product_category[]" class="form-control wizard-required" placeholder="Enter product category..." required>';
 
-    append_text += '</div><div class="col-md-4 col-lg-4 col-xl-4 mb-4 form-group"><label for="product_sku[]">SKU</label>';
-    append_text += '<input type="text" id="product_sku" name="product_sku[]" class="form-control" placeholder="SKU">';
-    // append_text += '</div></div><div class="component-group"><div class="col-md-2"><label for="product_hsnsac[]">HSN/SAC</label>';
-    // append_text += '<input type="text" id="product_hsnsac" name="product_hsnsac[]" class="form-control" placeholder="HSN/SAC...">';
-
-    // append_text += '</div></div><div class="component-group"><div class="col-md-1"><label for="product_taxper[]">GST %<span class="text-danger">*</span></label>';
-    // append_text += '<input type="text" id="product_taxper" name="product_taxper[]" class="form-control" placeholder="Tax %" value="0">';
-
-    append_text += '</div><div class="col-md-3 col-lg-3 col-xl-3" style="">';
-    append_text += '<label>&nbsp;</label><br><button type="button" class="btn   btn-danger btn_remove_product mt-2" data-toggle="tooltip" title="Remove Product" id="' + i + '" name="btn_remove_product"><i class="fa fa-trash-alt m-0"></i></button>';
+    append_text += '</div><div class="col-md-1 col-lg-1 col-xl-1 mb-3">';
+    append_text += '<label for="form-label" style="padding-top:30px;">&#160;</label><button type="button" class="btn   btn-danger btn_remove_product mt-2" data-toggle="tooltip" title="Remove Product" id="' + i + '" name="btn_remove_product"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"></path></svg></button>';
     append_text += '</div></div></div>';
 
-    // alert(i);
     $('#div_add_products').append(append_text);
 });
 
 $(document).on('click', '.btn_remove_product', function () {
     var button_id = $(this).attr("id");
-    // alert(button_id);
     $('#row' + button_id + '').remove();
     calculateSum();
 });
@@ -57,7 +46,6 @@ function calculateSum() {
         if (!isNaN(this.value) && this.value.length != 0)
             sum += parseFloat(this.value);
     });
-    // alert(sum.toFixed(2));
     $("#order_amount").val(sum.toFixed(2));
     $("#total_amount").val((parseFloat(sum) + parseFloat($("#extra_charges").val())).toFixed(2));
     if (sum >= parseFloat(50000)) {
@@ -86,17 +74,17 @@ $(document).ready(function () {
         var currentActiveStep = $(this).parents('.form-wizard').find('.form-wizard-list .active');
         var next = $(this);
         var nextWizardStep = true;
-        // parentFieldset.find('.wizard-required').each(function () {
-        //     var thisValue = $(this).val();
+        parentFieldset.find('.wizard-required').each(function () {
+            var thisValue = $(this).val();
 
-        //     if (thisValue == "") {
-        //         $(this).siblings(".wizard-form-error").show();
-        //         nextWizardStep = false;
-        //     }
-        //     else {
-        //         $(this).siblings(".wizard-form-error").hide();
-        //     }
-        // });
+            if (thisValue == "") {
+                $(this).siblings(".wizard-form-error").show();
+                nextWizardStep = false;
+            }
+            else {
+                $(this).siblings(".wizard-form-error").hide();
+            }
+        });
         if (nextWizardStep) {
             next.parents('.wizard-fieldset').removeClass("show", "400");
             currentActiveStep.removeClass('active').addClass('activated').next().addClass('active', "400");
