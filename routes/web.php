@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WareHouseController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,11 @@ Route::middleware(['auth'])->group(function () {
     /**Order Creation */
     Route::get('order/create', [OrderController::class, 'show'])->name('create-order');
     Route::post('create-order', [OrderController::class, 'create'])->name('create.order');
+
+    /**Wallet */
+    Route::get('wallet', [WalletController::class, 'show'])->name('wallet');
+    Route::post('/wallet/store', [WalletController::class, 'store'])->name('wallet.store');
+
 });
 
 

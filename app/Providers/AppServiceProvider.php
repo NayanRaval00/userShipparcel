@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Wallet;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,5 +24,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
+
+        View::composer('*', function ($view) {
+            $walletAmount = 0;
+
+            if (Auth::check()) {
+                $wallet = Wallet::where('user_id', Auth::id())->first();
+                $walletAmount = $wallet ? $wallet->amount : 0;
+            }
+
+            $view->with('walletAmount', $walletAmount);
+        });
     }
 }
