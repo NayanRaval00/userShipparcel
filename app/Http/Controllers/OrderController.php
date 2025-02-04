@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ParcelxHelper;
 use App\Models\Warehouse;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,12 +19,9 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
-        $access_key = env('PARCELX_ACCESS_KEY');
-        $secret_key = env('PARCELX_SECRET_KEY');
-        $auth_token = base64_encode($access_key . ':' . $secret_key);
-        dd($auth_token);
+
         $data = [
-            'client_order_id' => $request->invoice_number ?? '',
+            'client_order_id' => $request->order_id ?? '',
             'consignee_emailid' => $request->consignee_emailid ?? '',
             'consignee_pincode' => $request->consignee_pincode ?? '',
             'consignee_mobile' => $request->consignee_mobile ?? '',
@@ -31,7 +29,7 @@ class OrderController extends Controller
             'consignee_address1' => $request->consignee_address1 ?? '',
             'consignee_address2' => $request->consignee_address2 ?? '',
             'consignee_name' => $request->consignee_name ?? '',
-            'invoice_number' => $request->invoice_number ?? '',
+            'invoice_number' => $request->order_id ?? '',
             'express_type' => 'surface',
             'pick_address_id' => $request->pickup_address ?? '',
             'return_address_id' => $request->is_return_address === 'true' ? $request->return_address : '',
@@ -50,9 +48,7 @@ class OrderController extends Controller
             'shipment_length' => $request->shipment_length ?? ['1'],
             'shipment_weight' => $request->shipment_weight ?? ['1'],
         ];
-        
-        Log::info('data',$data);
-        // Map product details
+
         if (!empty($request->product_sku)) {
             foreach ($request->product_sku as $index => $sku) {
                 $data['products'][] = [
@@ -67,26 +63,36 @@ class OrderController extends Controller
                 ];
             }
         }
+
         try {
-            $response = Http::withHeaders([
-                'access-token' => $auth_token,
-            ])->withOptions(['verify' => false])
-                ->post('https://app.parcelx.in/api/v1/order/create_order', $data);
-                Log::info('sss',[$response]);
-                
+
+            $url = 'https://app.parcelx.in/api/v3/order/create_order';
+            $response = ParcelxHelper::sendRequest($url, $data);
+
+
             if ($response->successful()) {
                 $responseData = $response->json();
                 Log::info('API Response:', $responseData);
-                return response()->json(['success' => true, 'data' => $responseData]);
+
+                if ($responseData['status'] == false) {
+                    session()->flash('error', $responseData['responsemsg'][0]);
+                    return redirect()->back();
+                }
+                session()->flash('success', $responseData['responsemsg'][0]);
+                return redirect()->back();
             } else {
                 $responseBody = $response->json();
                 $errorMessage = $responseBody['responsemsg'] ?? 'Unknown error occurred';
                 Log::error('API Error:', ['response' => $responseBody]);
-                return response()->json(['success' => false, 'error' => $errorMessage], 400);
+
+                session()->flash('error', $errorMessage);
+                return redirect()->back();
             }
         } catch (Exception $e) {
             Log::error('Exception:', ['message' => $e->getMessage()]);
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+
+            session()->flash('error', 'An error occurred: ' . $e->getMessage());
+            return redirect()->back();
         }
     }
 }
