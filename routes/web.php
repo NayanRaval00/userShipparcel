@@ -24,11 +24,13 @@ Route::middleware(['auth'])->group(function () {
     /**Order Creation */
     Route::get('order/create', [OrderController::class, 'show'])->name('create-order');
     Route::post('create-order', [OrderController::class, 'create'])->name('create.order');
+    Route::get('list-order', [OrderController::class, 'list'])->name('list.order');
+    Route::get('/orders/{id}', [OrderController::class, 'view'])->name('orders.view');
+
 
     /**Wallet */
     Route::get('wallet', [WalletController::class, 'show'])->name('wallet');
     Route::post('/wallet/store', [WalletController::class, 'store'])->name('wallet.store');
-
 });
 
 

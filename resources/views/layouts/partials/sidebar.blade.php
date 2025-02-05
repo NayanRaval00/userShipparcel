@@ -30,6 +30,12 @@
                     <span>Create Order</span>
                 </a>
             </li>
+            <li>
+                <a href="{{route('list.order')}}">
+                    <iconify-icon icon="mage:email" class="menu-icon"></iconify-icon>
+                    <span>List Order</span>
+                </a>
+            </li>
             <li class="sidebar-menu-group-title">Other</li>
             <li>
                 <a href="{{route('wallet')}}">

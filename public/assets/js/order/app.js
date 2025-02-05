@@ -26,6 +26,10 @@ $('#btn_add_products').click(function () {
     append_text += '</div><div class="col-md-3 col-lg-3 col-xl-3 mb-3"><label for="form-label">Category<span class="text-danger">*</span></label>';
     append_text += '<input type="text" id="product_category" name="product_category[]" class="form-control wizard-required" placeholder="Enter product category..." required>';
 
+
+    append_text += '</div><div class="col-md-3 col-lg-3 col-xl-3 mb-3"label for="form-label">SKU<span class="text-danger">*</span></label>';
+    append_text += '<input type="text" id="product_sku" name="product_sku[]" class="form-control wizard-required" placeholder="Enter SKU..." required>';
+    
     append_text += '</div><div class="col-md-1 col-lg-1 col-xl-1 mb-3">';
     append_text += '<label for="form-label" style="padding-top:30px;">&#160;</label><button type="button" class="btn   btn-danger btn_remove_product mt-2" data-toggle="tooltip" title="Remove Product" id="' + i + '" name="btn_remove_product"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"></path></svg></button>';
     append_text += '</div></div></div>';

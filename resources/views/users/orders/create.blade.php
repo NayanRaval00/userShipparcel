@@ -145,7 +145,7 @@
                                     <div class="position-relative">
                                         <input type="text" id="consignee_emailid" name="consignee_emailid"
                                             class="form-control wizard-required"
-                                            placeholder="Enter Consignee email..." required>
+                                            placeholder="Enter Consignee email...">
                                         <div class="wizard-form-error"></div>
                                     </div>
                                 </div>
@@ -221,8 +221,8 @@
                                             class="form-control wizard-required"
                                             data-placeholder="Select Payment mode..." required>
                                             <option value="">-- Select Mode --</option>
-                                            <option value="prepaid">Prepaid</option>
-                                            <option value="cod">COD</option>
+                                            <option value="Prepaid">Prepaid</option>
+                                            <option value="Cod">COD</option>
                                         </select>
                                     </div>
                                 </div>
@@ -246,9 +246,14 @@
                                         <label for="form-label">Category<span class="text-danger">*</span></label>
                                         <input type="text" id="product_category" name="product_category[]" class="form-control wizard-required" placeholder="Enter product category..." required>
                                     </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3 mb-3">
+                                        <label for="form-label">SKU<span class="text-danger">*</span></label>
+                                        <input type="text" id="product_sku" name="product_sku[]" class="form-control wizard-required" placeholder="Enter SKU..." required>
+                                    </div>
                                     <div class="col-md-1 col-lg-1 col-xl-1 mb-3">
                                         <label for="form-label" style="padding-top:30px;">&#160;</label>
-                                        <button type="button" class="btn btn-success m-0" data-toggle="tooltip" id="btn_add_products" name="btn_add_products" data-original-title="Add Product"><i class="fa fa-plus"></i><svg xmlns="http://www.w3.org/2000/svg" width="0.88em" height="1em" viewBox="0 0 448 512">
+                                        <button type="button" class="btn btn-success m-0" data-toggle="tooltip" id="btn_add_products" name="btn_add_products" data-original-title="Add Product">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="0.88em" height="1em" viewBox="0 0 448 512">
                                                 <path fill="currentColor" d="M64 80c-8.8 0-16 7.2-16 16v320c0 8.8 7.2 16 16 16h320c8.8 0 16-7.2 16-16V96c0-8.8-7.2-16-16-16zM0 96c0-35.3 28.7-64 64-64h320c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64zm200 248v-64h-64c-13.3 0-24-10.7-24-24s10.7-24 24-24h64v-64c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24h-64v64c0 13.3-10.7 24-24 24s-24-10.7-24-24"></path>
                                             </svg></button>
                                     </div>
@@ -265,11 +270,6 @@
                                     <div class="col-md-3 col-lg-3 col-xl-3 mb-3">
                                         <label for="form-label">GST Amount<span class="text-danger">*</span></label>
                                         <input type="text" id="tax_amount" name="tax_amount" class="form-control wizard-required" placeholder="Enter gst..." required>
-                                    </div>
-
-                                    <div class="col-md-3 col-lg-3 col-xl-3 mb-3">
-                                        <label for="form-label">Total Amount<span class="text-danger">*</span></label>
-                                        <input type="text" id="total_amount" name="total_amount" class="form-control wizard-required" placeholder="Enter total amount..." required>
                                     </div>
 
                                     <div class="col-md-3 col-lg-3 col-xl-3 mb-3">
