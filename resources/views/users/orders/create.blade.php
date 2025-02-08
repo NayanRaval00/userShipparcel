@@ -365,6 +365,6 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('new_templete/assets/js/vendor/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/order/app.js') }}"></script>
 @endsection

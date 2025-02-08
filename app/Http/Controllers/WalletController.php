@@ -29,23 +29,23 @@ class WalletController extends Controller
         $userId = Auth::id();
 
         DB::transaction(function () use ($userId, $request) {
-            $wallet = Wallet::where('user_id', $userId)->first();
+            // $wallet = Wallet::where('user_id', $userId)->first();
 
-            if ($wallet) {
-                // Update existing wallet balance
-                $wallet->update([
-                    'amount' => $wallet->amount + $request->amount,
-                    'promo_code' => $request->promo_code ?? $wallet->promo_code,
-                ]);
-            } else {
-                // Create new wallet record
-                $wallet = Wallet::create([
-                    'amount' => $request->amount,
-                    'promo_code' => $request->promo_code,
-                    'user_id' => $userId,
-                    'status' => 1
-                ]);
-            }
+            // if ($wallet) {
+            //     // Update existing wallet balance
+            //     $wallet->update([
+            //         'amount' => $wallet->amount + $request->amount,
+            //         'promo_code' => $request->promo_code ?? $wallet->promo_code,
+            //     ]);
+            // } else {
+            //     // Create new wallet record
+            //     $wallet = Wallet::create([
+            //         'amount' => $request->amount,
+            //         'promo_code' => $request->promo_code,
+            //         'user_id' => $userId,
+            //         'status' => 103
+            //     ]);
+            // }
 
             // Create a transaction record
             WalletTransaction::create([
@@ -54,7 +54,7 @@ class WalletController extends Controller
                 'name' => 'Wallet Top-Up',
                 'issued_date' => now(),
                 'amount' => $request->amount,
-                'status' => 1
+                'status' => 103
             ]);
         });
 

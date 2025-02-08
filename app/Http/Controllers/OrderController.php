@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Helpers\ParcelxHelper;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Wallet;
+use App\Models\WalletTransaction;
 use App\Models\Warehouse;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,6 +20,14 @@ class OrderController extends Controller
      */
     public function show()
     {
+        $user = Auth::user();
+        $chargeableAmount = $user->chargeable_amount;
+
+        $totalAmount = Wallet::where('user_id', $user->id)->first();
+        if ($totalAmount->amount < $chargeableAmount) {
+            session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
+        }
+
         $data['warehouses'] = Warehouse::where('status', 1)->get();
         return view('users.orders.create', $data);
     }
@@ -27,6 +37,15 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
+        $user = Auth::user();
+        $chargeableAmount = $user->chargeable_amount;
+
+        $totalAmount = Wallet::where('user_id', $user->id)->first();
+        if ($totalAmount->amount < $chargeableAmount) {
+            session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
+            return redirect()->back();
+        }
+
         if (!$request->has('product_name') || empty($request->product_name)) {
             session()->flash('error', 'The products field is required.');
             return redirect()->back();
@@ -122,7 +141,7 @@ class OrderController extends Controller
                 $dbData['partner_display_name'] = $responseData['data']['partner_display_name'] ?? null;
                 $dbData['pickup_id'] = $responseData['data']['pickup_id'] ?? null;
                 $dbData['courier_name'] = $responseData['data']['courier_name'] ?? null;
-                $dbData['user_id'] = Auth::user()->id;
+                $dbData['user_id'] = $user->id;
 
 
                 $order = Order::create($dbData);
@@ -131,6 +150,25 @@ class OrderController extends Controller
                 foreach ($apiData['products'] as $product) {
                     $product['order_id'] = $order->id;
                     Product::create($product);
+                }
+
+                // Deduct wallet charge
+                $chargeableAmount;
+                $totalAmount = Wallet::where('user_id', $user->id)->first();
+                $updatedAmount = $totalAmount->amount - $chargeableAmount;
+
+                $totalAmount->update([
+                    'amount' => $updatedAmount
+                ]);
+
+                $walletTransactions = WalletTransaction::where([
+                    'user_id' => Auth::id(),
+                    'status' => 101
+                ])->get();
+
+                // update status after add amount or update amount
+                foreach ($walletTransactions as $transaction) {
+                    $transaction->update(['status' => 102]);
                 }
 
                 session()->flash('success', 'Order placed successfully! AWB: ' . $responseData['data']['awb_number']);
@@ -176,7 +214,8 @@ class OrderController extends Controller
      */
     public function view($id)
     {
-        $order = Order::with('products')->findOrFail($id);
+        $order = Order::where(['id' => $id])->with('products')->first();
+        dd($order->products);
         return view('users.orders.view', compact('order'));
     }
 }

@@ -33,13 +33,6 @@
                         Recharge History
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-web-design-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-web-design" type="button" role="tab" aria-controls="pills-web-design"
-                        aria-selected="false" tabindex="-1">
-                        Wallet Duration
-                    </button>
-                </li>
             </ul>
         </div>
         <div class="card-body p-24">
@@ -102,6 +95,7 @@
                                                     <th>Invoice</th>
                                                     <th>Name</th>
                                                     <th>Issued Date</th>
+                                                    <th>Updated Date</th>
                                                     <th>Amount</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
@@ -115,14 +109,18 @@
                                                     </td>
                                                     <td>{{ $transaction->name }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($transaction->issued_date)->format('d M Y') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($transaction->updated_at)->format('d M Y') }}</td>
                                                     <td>₹{{ number_format($transaction->amount, 2) }}</td>
                                                     <td>
-                                                        <span class="badge {{ $transaction->status === 'Completed' ? 'bg-success' : 'bg-warning' }}">
+                                                        <!-- <span class="badge {{ $transaction->status === 'Completed' ? 'bg-success' : 'bg-warning' }}">
                                                             {{ $transaction->status }}
+                                                        </span> -->
+                                                        <span>
+                                                            {{ $transaction->status_label }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">View More ></a>
+                                                        <a href="javascript:void(0)" class="text-primary-600">View More</a>
                                                     </td>
                                                 </tr>
                                                 @empty
@@ -130,92 +128,6 @@
                                                     <td colspan="6" class="text-center">No transactions found.</td>
                                                 </tr>
                                                 @endforelse
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div><!-- card end -->
-                        </div>
-                        <!-- table end -->
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="pills-web-design" role="tabpanel" aria-labelledby="pills-web-design-tab"
-                    tabindex="0">
-                    <div class="row gy-4">
-                        <!-- table start -->
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0">Bordered Tables</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table basic-border-table mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th>Invoice </th>
-                                                    <th>Name</th>
-                                                    <th>Issued Date</th>
-                                                    <th>Amount</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">#526534</a>
-                                                    </td>
-                                                    <td>Kathryn Murphy</td>
-                                                    <td>25 Jan 2024</td>
-                                                    <td>$200.00</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">View More ></a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">#696589</a>
-                                                    </td>
-                                                    <td>Annette Black</td>
-                                                    <td>25 Jan 2024</td>
-                                                    <td>$200.00</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">View More ></a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">#256584</a>
-                                                    </td>
-                                                    <td>256584</td>
-                                                    <td>10 Feb 2024</td>
-                                                    <td>$200.00</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">View More ></a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">#526587</a>
-                                                    </td>
-                                                    <td>Eleanor Pena</td>
-                                                    <td>10 Feb 2024</td>
-                                                    <td>$150.00</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">View More ></a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">#105986</a>
-                                                    </td>
-                                                    <td>Leslie Alexander</td>
-                                                    <td>15 Mar 2024</td>
-                                                    <td>$150.00</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">View More ></a>
-                                                    </td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
