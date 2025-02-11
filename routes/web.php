@@ -11,9 +11,6 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('test-me',function () {
-    return "yes";
-});
 // routes/web.php
 
 
