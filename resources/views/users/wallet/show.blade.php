@@ -66,8 +66,8 @@
                                 <div class="hover-scale-img border radius-16 overflow-hidden">
                                     <img src="{{ asset('assets/images/qr/images.jpg') }}" alt="" class="hover-scale-img__img w-100 h-100 object-fit-cover">
                                     <div class="py-16 px-24">
-                                        <h6 class="mb-4">This QR for payment</h6>
-                                        <p class="mb-0 text-sm text-secondary-light">scan me</p>
+                                        <!-- <h6 class="mb-4">This QR for payment</h6> -->
+                                        <!-- <p class="mb-0 text-sm text-secondary-light">scan me</p> -->
                                     </div>
                                 </div>
                             </div>
