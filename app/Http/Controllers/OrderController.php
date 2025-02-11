@@ -42,7 +42,7 @@ class OrderController extends Controller
         $chargeableAmount = $user->chargeable_amount;
 
         $totalAmount = Wallet::where('user_id', $user->id)->first();
-        if ($totalAmount->amount < $chargeableAmount) {
+        if ($totalAmount && $totalAmount->amount < $chargeableAmount) {
             session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
             return redirect()->back();
         }
