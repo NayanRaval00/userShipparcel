@@ -26,6 +26,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('create-order', [OrderController::class, 'create'])->name('create.order');
     Route::get('list-order', [OrderController::class, 'list'])->name('list.order');
     Route::get('/orders/{id}', [OrderController::class, 'view'])->name('orders.view');
+    Route::post('cancel-order', [OrderController::class, 'cancelOrder'])->name('order.cancel');
+    Route::post('order-label-data', [OrderController::class, 'orderLabelData'])->name('order.label-data');
 
 
     /**Wallet */

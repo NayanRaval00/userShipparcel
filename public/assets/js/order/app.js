@@ -29,7 +29,7 @@ $('#btn_add_products').click(function () {
 
     append_text += '</div><div class="col-md-3 col-lg-3 col-xl-3 mb-3"label for="form-label">SKU<span class="text-danger">*</span></label>';
     append_text += '<input type="text" id="product_sku" name="product_sku[]" class="form-control wizard-required" placeholder="Enter SKU..." required>';
-    
+
     append_text += '</div><div class="col-md-1 col-lg-1 col-xl-1 mb-3">';
     append_text += '<label for="form-label" style="padding-top:30px;">&#160;</label><button type="button" class="btn   btn-danger btn_remove_product mt-2" data-toggle="tooltip" title="Remove Product" id="' + i + '" name="btn_remove_product"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"></path></svg></button>';
     append_text += '</div></div></div>';
@@ -170,3 +170,96 @@ $(document).ready(function () {
     });
 });
 // =============================== Wizard Step Js End ================================
+
+
+
+//=============================Cancel Order API ===========================
+
+function showCancelConfirmModal(awbNumber) {
+    $('#cancelOrderModal').data('awbNumber', awbNumber); // Store AWB number
+    var modal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
+    modal.show();
+}
+
+function cancelOrder() {
+    let awbNumber = $('#cancelOrderModal').data('awbNumber'); // Retrieve stored AWB number
+    console.log(awbNumber, 'awbNumber'); // Debugging
+
+    if (!awbNumber) {
+        showMessage("AWB number is missing!", "danger");
+        return;
+    }
+
+    $.ajax({
+        url: ORDER_CANCEL_URL,
+        type: 'POST',
+        data: JSON.stringify({
+            awb_number: awbNumber
+        }),
+        contentType: 'application/json',
+        headers: {
+            'X-CSRF-TOKEN': CSRF_TOKEN
+        },
+        success: function (response) {
+            showMessage(response.message, 'success');
+            setTimeout(() => location.reload(), 2000); // Reload after success
+
+            // Close the modal on error as well
+            var modal = bootstrap.Modal.getInstance(document.getElementById('cancelOrderModal'));
+            modal.hide()
+        },
+        error: function (xhr) {
+            let response = xhr.responseJSON;
+            let errorMessage = response && response.message ? response.message : 'Something went wrong!';
+            showMessage(errorMessage, 'danger');
+
+            // Close the modal on error as well
+            var modal = bootstrap.Modal.getInstance(document.getElementById('cancelOrderModal'));
+            modal.hide();
+        }
+    });
+}
+
+function showMessage(message, type) {
+    let alertBox = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
+    $('#alertContainer').html(alertBox);
+
+    // Auto-close after 3 seconds
+    setTimeout(() => {
+        $(".alert").alert('close');
+    }, 5000);
+}
+
+function openLabelData(awbNumber) {
+    console.log(awbNumber, 'awbNumber');
+
+    if (!awbNumber) {
+        showMessage("AWB number is missing!", "danger");
+        return;
+    }
+
+    $.ajax({
+        url: ORDER_LABEL_URL,
+        type: 'POST',
+        data: JSON.stringify({
+            awb_number: awbNumber
+        }),
+        contentType: 'application/json',
+        headers: {
+            'X-CSRF-TOKEN': CSRF_TOKEN
+        },
+        success: function (response) {
+            showMessage(response.message, 'success');
+            setTimeout(() => location.reload(), 2000); // Reload after success
+        },
+        error: function (xhr) {
+            let response = xhr.responseJSON;
+            let errorMessage = response && response.message ? response.message : 'Something went wrong!';
+            showMessage(errorMessage, 'danger');
+            
+        }
+    });
+}

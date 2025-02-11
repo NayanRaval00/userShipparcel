@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ParcelxHelper;
+use App\Http\Requests\CancelOrderRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Wallet;
@@ -203,7 +204,6 @@ class OrderController extends Controller
                 'payment_mode',
                 'created_at'
             ])
-            ->with('products')
             ->get();
 
         return view('users.orders.list', $data);
@@ -214,8 +214,45 @@ class OrderController extends Controller
      */
     public function view($id)
     {
-        $order = Order::where(['id' => $id])->with('products')->first();
-        dd($order->products);
+        $order = Order::where(['id' => $id])->with('productsData')->first();
         return view('users.orders.view', compact('order'));
+    }
+
+    /**Cancel Order */
+
+    public function cancelOrder(CancelOrderRequest $request)
+    {
+        $awbNumber = $request->awb_number;
+
+        $url = 'https://app.parcelx.in/api/v1/order/cancel_order';
+        $apiData = ['awb' => $awbNumber];
+
+        $response = ParcelxHelper::sendRequest($url, $apiData);
+        $responseData = $response->json(); // Get response as an array
+
+        if ($response->successful() && isset($responseData['status']) && $responseData['status'] == true) {
+            return response()->json(['success' => true, 'message' => 'Order canceled successfully']);
+        } else {
+            $errorMsg = $responseData['responsemsg'] ?? 'Failed to cancel order';
+            return response()->json(['success' => false, 'message' => $errorMsg], 400);
+        }
+    }
+
+    /**Order Label Data */
+    public function orderLabelData(CancelOrderRequest $request)
+    {
+        $awbNumber = $request->awb_number;
+
+        $url = 'https://app.parcelx.in/api/v1/label?awb=' . $awbNumber . '&label_type=document';
+
+        $response = ParcelxHelper::sendRequest($url, []);
+        $responseData = $response->json();
+
+        if ($response->successful() && isset($responseData['status']) && $responseData['status'] == true) {
+            return response()->json(['success' => true, 'message' => 'Order label data get successfully']);
+        } else {
+            $errorMsg = $responseData['responsemsg'] ?? 'Failed to get order label data';
+            return response()->json(['success' => false, 'message' => $errorMsg], 400);
+        }
     }
 }

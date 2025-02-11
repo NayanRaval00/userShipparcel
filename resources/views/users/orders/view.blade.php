@@ -35,7 +35,7 @@
                 <!-- Product List -->
                 <div class="mt-4">
                     <h5>Products</h5>
-                    @if($order->products && count($order->products) > 0)
+                    @if($order->productsData && count($order->productsData) > 0)
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -47,7 +47,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($order->products as $product)
+                            @foreach($order->productsData as $product)
                             <tr>
                                 <td>{{ $product->product_sku }}</td>
                                 <td>{{ $product->product_name }}</td>

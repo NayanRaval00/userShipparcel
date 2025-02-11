@@ -40,7 +40,7 @@
             <li>
                 <a href="{{route('wallet')}}">
                     <iconify-icon icon="mage:email" class="menu-icon"></iconify-icon>
-                    <span>Billing</span>
+                    <span>Wallet</span>
                 </a>
             </li>
         </ul>
