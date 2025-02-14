@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('pincode')->nullable();
             $table->string('pick_address_id')->nullable();
+            $table->integer('user_id')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();
         });

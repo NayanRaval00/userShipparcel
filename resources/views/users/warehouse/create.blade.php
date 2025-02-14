@@ -17,8 +17,15 @@
                         @endif
 
                         @if (session('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
+                        <div class="alert alert-danger">
+                            @if(is_array(session('error')))
+                            {{ json_encode(session('error')) }}
+                            @else
+                            {{ session('error') }}
+                            @endif
+                        </div>
                         @endif
+
                     </div>
                     <form id="warehouseForm" method="POST" action="{{ route('create.warehouse') }}">
                         @csrf

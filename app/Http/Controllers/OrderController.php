@@ -31,7 +31,7 @@ class OrderController extends Controller
             session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
         }
 
-        $data['warehouses'] = Warehouse::where('status', 1)->get();
+        $data['warehouses'] = Warehouse::where(['status' => 1, 'user_id' => $user->id])->get();
         return view('users.orders.create', $data);
     }
 
@@ -67,7 +67,7 @@ class OrderController extends Controller
             'invoice_number' => $request->invoice_number,
             'express_type' => 'surface',
             'pick_address_id' => $request->pickup_address,
-            'return_address_id' => $request->is_return_address === 'true' ? $request->return_address : '',
+            'return_address_id' => $request->is_return_address === 'true' ? $request->return_address : $request->pickup_address,
             'cod_amount' => $request->cod_amount ?? '0',
             'tax_amount' => $request->tax_amount ?? '0',
             'mps' => $request->mps ?? '0',
