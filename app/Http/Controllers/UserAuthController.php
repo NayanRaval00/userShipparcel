@@ -27,6 +27,6 @@ class UserAuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        return redirect()->route('custom.login');
+        return redirect()->route('admin-login');
     }
 }
