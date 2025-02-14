@@ -24,12 +24,12 @@ class OrderController extends Controller
         $user = Auth::user();
         $chargeableAmount = $user->chargeable_amount;
 
-        $totalAmount = Wallet::where('user_id', $user->id)->first();
-        if (!$totalAmount) {
-            session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
-        } elseif ($totalAmount->amount < $chargeableAmount) {
-            session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
-        }
+        // $totalAmount = Wallet::where('user_id', $user->id)->first();
+        // if (!$totalAmount) {
+        //     session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
+        // } elseif ($totalAmount->amount < $chargeableAmount) {
+        //     session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
+        // }
 
         $data['warehouses'] = Warehouse::where(['status' => 1, 'user_id' => $user->id])->get();
         return view('users.orders.create', $data);
@@ -43,12 +43,12 @@ class OrderController extends Controller
         $user = Auth::user();
         $chargeableAmount = $user->chargeable_amount;
 
-        $totalAmount = Wallet::where('user_id', $user->id)->first();
-        if (!$totalAmount) {
-            session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
-        } elseif ($totalAmount->amount < $chargeableAmount) {
-            session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
-        }
+        // $totalAmount = Wallet::where('user_id', $user->id)->first();
+        // if (!$totalAmount) {
+        //     session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
+        // } elseif ($totalAmount->amount < $chargeableAmount) {
+        //     session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
+        // }
 
         if (!$request->has('product_name') || empty($request->product_name)) {
             session()->flash('error', 'The products field is required.');
@@ -158,12 +158,26 @@ class OrderController extends Controller
 
                 // Deduct wallet charge
                 $chargeableAmount;
-                $totalAmount = Wallet::where('user_id', $user->id)->first();
-                $updatedAmount = $totalAmount->amount - $chargeableAmount;
+                // $totalAmount = Wallet::where('user_id', $user->id)->first();
+                // $updatedAmount = $totalAmount->amount - $chargeableAmount;
 
-                $totalAmount->update([
-                    'amount' => $updatedAmount
-                ]);
+                // $totalAmount->update([
+                //     'amount' => $updatedAmount
+                // ]);
+
+                $totalAmount = Wallet::where('user_id', $user->id)->first();
+
+                if ($totalAmount) {
+                    $updatedAmount = $totalAmount->amount - $chargeableAmount;
+                    $totalAmount->update(['amount' => $updatedAmount]);
+                } else {
+                    Wallet::create([
+                        'user_id' => $user->id,
+                        'amount' => -$chargeableAmount
+                    ]);
+                }
+
+
 
                 $walletTransactions = WalletTransaction::where([
                     'user_id' => Auth::id(),
