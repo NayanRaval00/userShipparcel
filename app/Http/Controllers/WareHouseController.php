@@ -49,9 +49,12 @@ class WareHouseController extends Controller
                         'pick_address_id' => $responseData['data']['pick_address_id'],
                     ]);
                 }
+                $user->logActivity($user, 'warehouse created successfully', 'warehouse_created');
 
                 return redirect()->back()->with('success', 'Warehouse created successfully!');
             } else {
+                $user->logActivity($user, 'warehouse created An error occurred', 'warehouse_created');
+
                 $responseBody = $response->json();
                 $errorMessage = $responseBody['responsemsg'] ?? 'Unknown error occurred';
                 Log::info('API Error:', ['response' => $responseBody]);
@@ -59,6 +62,8 @@ class WareHouseController extends Controller
                 return redirect()->back()->with('error', $errorMessage);
             }
         } catch (Exception $e) {
+            $user->logActivity($user, 'warehouse created An error occurred', 'warehouse_created');
+
             Log::error('Exception:', ['message' => $e->getMessage()]);
 
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());

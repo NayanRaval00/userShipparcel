@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Warehouse')
+@section('title', 'Create Shipment')
 
 @section('content')
 <div class="dashboard-main-body">
     <div class="card">
         <div class="card-header">
-            <h5 class="card-title mb-0">List User Orders</h5>
+            <h5 class="card-title mb-0">List User Shipment</h5>
             <p>
                 @if (session('success'))
             <div class="alert alert-success">
@@ -46,7 +46,7 @@
                             <td>{{ $order->awb_number ?? 'N/A' }}</td>
                             <td>{{ $order->consignee_name }}</td>
                             <td>{{ $order->created_at->format('d M Y') }}</td>
-                            <td>${{ number_format($order->order_amount, 2) }}</td>
+                            <td>₹{{ number_format($order->order_amount, 2) }}</td>
                             <td>{{ ucfirst($order->payment_mode) }}</td>
                             <td>
                                 <a href="{{ route('orders.view', $order->id) }}" title="View Order" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">

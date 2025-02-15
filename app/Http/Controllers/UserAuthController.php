@@ -15,18 +15,34 @@ class UserAuthController extends Controller
 
     public function userLogin(LoginUserRequest $request)
     {
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('dashboard');
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->status == 1) {
+
+                $user->logActivity($user, 'User logged in', 'login');
+
+                return redirect()->route('dashboard');
+            }
+
+            Auth::logout();
+            return back()->withErrors(['email' => 'Your account is inactive.']);
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+        return back()->withErrors(['email' => 'Invalid credentials.']);
     }
 
     public function logout(Request $request)
     {
+        $user = Auth::user();
         Auth::logout();
+
+        if ($user) {
+            $user->logActivity($user, 'User logged out', 'logout');
+        }
+
         return redirect()->route('admin-login');
     }
 }

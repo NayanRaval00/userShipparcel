@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('image_url')->nullable();
+            $table->integer('cod_charges')->nullable();
+            $table->integer('cod_percentage')->nullable();
             $table->integer('status')->default(1);
             $table->rememberToken();
             $table->timestamps();
