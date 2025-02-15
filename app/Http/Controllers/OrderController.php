@@ -188,6 +188,7 @@ class OrderController extends Controller
                 foreach ($walletTransactions as $transaction) {
                     $transaction->update(['status' => 102]);
                 }
+                $user->logActivity($user, 'Order created successfully', 'order_created');
 
                 session()->flash('success', 'Order placed successfully! AWB: ' . $responseData['data']['awb_number']);
                 return redirect()->back();
@@ -199,6 +200,8 @@ class OrderController extends Controller
                 return redirect()->back();
             }
         } catch (Exception $e) {
+            $user->logActivity($e->getMessage(), 'Exception: Order Creation Failed', 'order_failed');
+
             Log::error('Exception:', ['message' => $e->getMessage()]);
             session()->flash('error', 'An error occurred: ' . $e->getMessage());
             return redirect()->back();
@@ -240,6 +243,8 @@ class OrderController extends Controller
     public function cancelOrder(CancelOrderRequest $request)
     {
         $awbNumber = $request->awb_number;
+        $order = Order::where('awb_number', $awbNumber)->get();
+        $user = Auth::user();
 
         $url = 'https://app.parcelx.in/api/v1/order/cancel_order';
         $apiData = ['awb' => $awbNumber];
@@ -248,8 +253,13 @@ class OrderController extends Controller
         $responseData = $response->json(); // Get response as an array
 
         if ($response->successful() && isset($responseData['status']) && $responseData['status'] == true) {
+            $user->logActivity($user, 'Order canceled successfully', 'order_canceled');
+
+
             return response()->json(['success' => true, 'message' => 'Order canceled successfully']);
         } else {
+            $user->logActivity($user(), 'Exception: Order cancel Failed', 'order_failed');
+
             $errorMsg = $responseData['responsemsg'] ?? 'Failed to cancel order';
             return response()->json(['success' => false, 'message' => $errorMsg], 400);
         }
