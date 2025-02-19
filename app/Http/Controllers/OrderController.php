@@ -270,13 +270,13 @@ class OrderController extends Controller
     {
         $awbNumber = $request->awb_number;
 
-        $url = 'https://app.parcelx.in/api/v1/label?awb=' . $awbNumber . '&label_type=document';
+        $url = 'https://app.parcelx.in/api/v1/label?awb=' . $awbNumber . '&label_type=label';
 
-        $response = ParcelxHelper::sendRequest($url, []);
+        $response = ParcelxHelper::sendGETRequest($url, []);
         $responseData = $response->json();
 
         if ($response->successful() && isset($responseData['status']) && $responseData['status'] == true) {
-            return response()->json(['success' => true, 'message' => 'Order label data get successfully']);
+            return response()->json(['success' => true, 'message' => 'Order label data get successfully', 'label_url' => $responseData['label_url']]);
         } else {
             $errorMsg = $responseData['responsemsg'] ?? 'Failed to get order label data';
             return response()->json(['success' => false, 'message' => $errorMsg], 400);
