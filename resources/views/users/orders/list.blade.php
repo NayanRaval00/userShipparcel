@@ -39,7 +39,7 @@
                     <tbody>
                         @foreach($orders as $order)
                         <tr>
-                            <td>#{{ $order->client_order_id }}</td>
+                            <td>#{{ $order->id }}</td>
                             <td>
                                 <a href="javascript:void(0)" class="text-primary-600">#{{ $order->invoice_number }}</a>
                             </td>
@@ -56,11 +56,11 @@
                                     <iconify-icon icon="lucide:edit"></iconify-icon>
                                 </a>
                                 <!-- Button to Open Modal -->
-                                <a href="javascript:void(0)" title="Cancel Order" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center"
+                                <a href="javascript:void(0)" title="Cancel Order" class="w-32-px h-32-px bg-info-focus text-info-main rounded-circle d-inline-flex align-items-center justify-content-center"
                                     onclick="showCancelConfirmModal('{{ $order->awb_number }}')">
                                     <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
                                 </a>
-                                <a href="javascript:void(0)" title="Cancel Order" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center"
+                                <a href="javascript:void(0)" title="Download label" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center"
                                     onclick="openLabelData('{{ $order->awb_number }}')">
                                     <iconify-icon icon="material-symbols:cloud-download"></iconify-icon>
                                 </a>

@@ -234,7 +234,6 @@ function showMessage(message, type) {
 }
 
 function openLabelData(awbNumber) {
-    console.log(awbNumber, 'awbNumber');
 
     if (!awbNumber) {
         showMessage("AWB number is missing!", "danger");
@@ -253,13 +252,14 @@ function openLabelData(awbNumber) {
         },
         success: function (response) {
             showMessage(response.message, 'success');
+            window.open(response.label_url, '_blank');
             setTimeout(() => location.reload(), 2000); // Reload after success
         },
         error: function (xhr) {
             let response = xhr.responseJSON;
             let errorMessage = response && response.message ? response.message : 'Something went wrong!';
             showMessage(errorMessage, 'danger');
-            
+
         }
     });
 }
