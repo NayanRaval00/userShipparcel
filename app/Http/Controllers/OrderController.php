@@ -265,7 +265,9 @@ class OrderController extends Controller
         }
     }
 
-    /**Order Label Data */
+    /**
+     * Order Label Data 
+     * */
     public function orderLabelData(CancelOrderRequest $request)
     {
         $awbNumber = $request->awb_number;
