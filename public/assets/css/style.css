@@ -14736,7 +14736,7 @@ td.fc-header-center {
 }
 @media (min-width: 1400px) {
   .sidebar {
-    width: 17.1875rem;
+    width: 14.1875rem;
   }
 }
 @media (min-width: 1650px) {
@@ -15058,17 +15058,17 @@ td.fc-header-center {
 
 @media (min-width: 1200px) {
   .dashboard-main {
-    margin-inline-start: 13.75rem;
+    margin-inline-start: 13.1875rem;
   }
 }
 @media (min-width: 1400px) {
   .dashboard-main {
-    margin-inline-start: 17.1875rem;
+    margin-inline-start: 13.1875rem;
   }
 }
 @media (min-width: 1650px) {
   .dashboard-main {
-    margin-inline-start: 19.5rem;
+    margin-inline-start: 13.1875rem;
   }
 }
 .dashboard-main-body {
