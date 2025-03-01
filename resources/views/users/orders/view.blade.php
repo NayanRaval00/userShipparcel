@@ -16,7 +16,7 @@
                         <h5>Order Information</h5>
                         <p><strong>Invoice Number:</strong> {{ $order->invoice_number }}</p>
                         <p><strong>AWB Number:</strong> {{ $order->awb_number ?? 'N/A' }}</p>
-                        <p><strong>Order Amount:</strong> ${{ number_format($order->order_amount, 2) }}</p>
+                        <p><strong>Order Amount:</strong> ₹{{ number_format($order->order_amount, 2) }}</p>
                         <p><strong>Payment Mode:</strong> {{ ucfirst($order->payment_mode) }}</p>
                         <p><strong>Created At:</strong> {{ $order->created_at->format('d M Y, h:i A') }}</p>
                     </div>
@@ -52,7 +52,7 @@
                                 <td>{{ $product->product_sku }}</td>
                                 <td>{{ $product->product_name }}</td>
                                 <td>{{ $product->product_quantity }}</td>
-                                <td>${{ number_format($product->product_value, 2) }}</td>
+                                <td>₹{{ number_format($product->product_value, 2) }}</td>
                                 <td>{{ $product->product_taxper }}%</td>
                             </tr>
                             @endforeach

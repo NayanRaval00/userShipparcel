@@ -42,7 +42,8 @@ class Order extends Model
         'courier_code',
         'pickup_id',
         'courier_name',
-        'user_id'
+        'user_id',
+        'status'
 
     ];
 

@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
 
     /**Wallet */
     Route::get('wallet', [WalletController::class, 'show'])->name('wallet');
+    Route::get('/wallet/fetchRates', [WalletController::class, 'fetchRates'])->name('wallet.fetchRates');
     Route::post('/wallet/store', [WalletController::class, 'store'])->name('wallet.store');
 });
 

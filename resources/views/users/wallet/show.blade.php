@@ -28,9 +28,16 @@
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-ui-design-tab" data-bs-toggle="pill" data-bs-target="#pills-ui-design"
-                        type="button" role="tab" aria-controls="pills-ui-design" aria-selected="false" tabindex="-1">
+                    <button class="nav-link" id="pills-ui-design-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-ui-design" type="button" role="tab" aria-controls="pills-ui-design"
+                        aria-selected="false" tabindex="-1">
                         Recharge History
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="rate-chart-tab" data-bs-toggle="pill" data-bs-target="#rate-chart"
+                        type="button" role="tab" aria-controls="rate-chart" aria-selected="false" tabindex="-1">
+                        Rate Chart
                     </button>
                 </li>
             </ul>
@@ -40,31 +47,35 @@
                 <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab"
                     tabindex="0">
                     <div class="row gy-4">
-                        @if(session('success'))
+                        @if (session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
                         @endif
 
-                        <form class="row gy-3 needs-validation" novalidate id="walletForm" action="{{ route('wallet.store') }}" method="POST">
+                        <form class="row gy-3 needs-validation" novalidate id="walletForm"
+                            action="{{ route('wallet.store') }}" method="POST">
                             @csrf
                             <div class="col-md-6">
                                 <label class="form-label">Enter your amount <span class="text-danger">*</span></label>
-                                <input type="number" name="amount" class="form-control" id="amount" placeholder="for example: 1000" required>
+                                <input type="number" name="amount" class="form-control" id="amount"
+                                    placeholder="for example: 1000" required>
                                 <div class="invalid-feedback">
                                     Please enter a valid amount.
                                 </div>
                             </div>
 
                             <div class="col-md-6 d-flex align-items-end gap-2">
-                                <input type="text" name="promo_code" class="form-control" id="promo_code" placeholder="Enter Promocode..">
+                                <input type="text" name="promo_code" class="form-control" id="promo_code"
+                                    placeholder="Enter Promocode..">
                                 <button class="btn btn-success" type="button" onclick="applyPromo()">Apply</button>
                             </div>
 
 
                             <div class="col-md-4 col-sm-6">
                                 <div class="hover-scale-img border radius-16 overflow-hidden">
-                                    <img src="{{ asset('assets/images/qr/images.jpg') }}" alt="" class="hover-scale-img__img w-100 h-100 object-fit-cover">
+                                    <img src="{{ asset('assets/images/qr/images.jpg') }}" alt=""
+                                        class="hover-scale-img__img w-100 h-100 object-fit-cover">
                                     <div class="py-16 px-24">
                                         <!-- <h6 class="mb-4">This QR for payment</h6> -->
                                         <!-- <p class="mb-0 text-sm text-secondary-light">scan me</p> -->
@@ -105,27 +116,32 @@
                                                 @forelse($transactions as $transaction)
                                                 <tr>
                                                     <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">#{{ $transaction->invoice_number }}</a>
+                                                        <a href="javascript:void(0)"
+                                                            class="text-primary-600">#{{ $transaction->invoice_number }}</a>
                                                     </td>
                                                     <td>{{ $transaction->name }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($transaction->issued_date)->format('d M Y') }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($transaction->updated_at)->format('d M Y') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($transaction->issued_date)->format('d M Y') }}
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($transaction->updated_at)->format('d M Y') }}
+                                                    </td>
                                                     <td>₹{{ number_format($transaction->amount, 2) }}</td>
                                                     <td>
                                                         <!-- <span class="badge {{ $transaction->status === 'Completed' ? 'bg-success' : 'bg-warning' }}">
-                                                            {{ $transaction->status }}
-                                                        </span> -->
+                                                                {{ $transaction->status }}
+                                                            </span> -->
                                                         <span>
                                                             {{ $transaction->status_label }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <a href="javascript:void(0)" class="text-primary-600">View More</a>
+                                                        <a href="javascript:void(0)" class="text-primary-600">View
+                                                            More</a>
                                                     </td>
                                                 </tr>
                                                 @empty
                                                 <tr>
-                                                    <td colspan="6" class="text-center">No transactions found.</td>
+                                                    <td colspan="6" class="text-center">No transactions found.
+                                                    </td>
                                                 </tr>
                                                 @endforelse
                                             </tbody>
@@ -137,10 +153,117 @@
                         <!-- table end -->
                     </div>
                 </div>
+                <div class="tab-pane fade" id="rate-chart" role="tabpanel" aria-labelledby="rate-chart-tab" tabindex="0">
+                    <!-- start -->
+                    <div class="row gy-4">
+                        <div class="card">
+                            <div class="card-header bg-light border-bottom pb-2">
+                                <form id="filter-form">
+                                    <!-- Mode Selection -->
+                                    <div class="mb-3">
+                                        <label class="fw-bold">Mode:</label>
+                                        <div class="d-flex gap-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="mode" value="air" checked>
+                                                <label class="form-check-label">Air</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="mode" value="surface">
+                                                <label class="form-check-label">Surface</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Weight Slab Filter -->
+                                    <div class="mt-3">
+                                        <span class="fw-bold text-primary">Select Weight Slab:</span>
+                                        <div class="d-flex flex-wrap gap-2 mt-2">
+                                            @foreach ($weightSlabs as $slab)
+                                            <div class="form-check">
+                                                <input class="form-check-input weight-filter" type="radio" name="weight_slab" value="{{ $slab->id }}">
+                                                <label class="form-check-label">{{ $slab->weight }} KG</label>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    <!-- Shipping Type Filter -->
+                                    <div class="mt-3">
+                                        <span class="fw-bold text-primary">Shipping Type:</span>
+                                        <div class="d-flex gap-3 mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input shipping-filter" type="radio" name="shipping_type" value="forward" checked>
+                                                <label class="form-check-label">Forward</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input shipping-filter" type="radio" name="shipping_type" value="rto">
+                                                <label class="form-check-label">RTO</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Rate Card Table -->
+                        <div class="col-12">
+                            <div id="rate-card-table">
+                                @include('users.wallet.rate_table', ['rates' => $rates, 'mode' => $mode])
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end -->
+                </div>
             </div>
         </div>
     </div>
 </div>
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        function updateRateCard() {
+            let mode = $('input[name="mode"]:checked').val();
+            let weightSlab = $('input[name="weight_slab"]:checked').val();
+            let shippingType = $('input[name="shipping_type"]:checked').val();
+
+            console.log(weightSlab, 'weightSlab');
+
+            $.ajax({
+                url: "{{ route('wallet.fetchRates') }}",
+                type: "GET",
+                data: {
+                    mode: mode,
+                    weight_slab: weightSlab,
+                    shipping_type: shippingType
+                },
+                success: function(response) {
+                    $('#rate-card-table').html(response);
+                }
+            });
+        }
+
+        $('input[name="mode"]').change(function() {
+            let mode = $(this).val();
+
+            $.ajax({
+                url: "{{ route('wallet') }}",
+                type: "GET",
+                data: {
+                    mode: mode
+                },
+                success: function(response) {
+                    $('.weight-slabs-container').html(response.weightSlabsHtml);
+                    updateRateCard();
+                }
+            });
+        });
+
+        $(document).on('change', 'input[name="weight_slab"], input[name="shipping_type"]', function() {
+            updateRateCard();
+        });
+    });
+</script>
+@endpush
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         let form = document.getElementById('walletForm');
