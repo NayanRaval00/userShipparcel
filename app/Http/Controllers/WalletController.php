@@ -29,18 +29,21 @@ class WalletController extends Controller
 
         $userSlabs = UserCourierWeightSlab::where('user_id', Auth::id())->with('courierCompany')->get();
 
-        if ($userSlabs->isEmpty()) {
-            return view('users.wallet.show', compact('transactions'))->with('error', 'No courier slabs found.');
-        }
-
         $weightSlabs = collect();
         $rates = collect();
+
+        if ($userSlabs->isEmpty()) {
+            return view('users.wallet.show', compact('transactions', 'weightSlabs', 'rates', 'mode'))
+                ->with('error', 'No courier slabs found.');
+        }
 
         foreach ($userSlabs as $slab) {
             $slabIds = ($mode == 'air') ? json_decode($slab->air_weight_slab_ids, true) ?? []
                 : json_decode($slab->surface_weight_slab_ids, true) ?? [];
 
-            $weightSlabs = $weightSlabs->merge(CourierWeightSlab::whereIn('id', $slabIds)->get());
+            if (!empty($slabIds)) {
+                $weightSlabs = $weightSlabs->merge(CourierWeightSlab::whereIn('id', $slabIds)->get());
+            }
 
             $rateModel = ($mode == 'air') ? new UserAIRCourierRate : new UserSurfaceCourierRate;
             $rates = $rates->merge($rateModel::where([
