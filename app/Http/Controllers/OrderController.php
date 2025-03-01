@@ -43,13 +43,6 @@ class OrderController extends Controller
         $user = Auth::user();
         $chargeableAmount = $user->chargeable_amount;
 
-        // $totalAmount = Wallet::where('user_id', $user->id)->first();
-        // if (!$totalAmount) {
-        //     session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
-        // } elseif ($totalAmount->amount < $chargeableAmount) {
-        //     session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
-        // }
-
         if (!$request->has('product_name') || empty($request->product_name)) {
             session()->flash('error', 'The products field is required.');
             return redirect()->back();
@@ -146,6 +139,7 @@ class OrderController extends Controller
                 $dbData['pickup_id'] = $responseData['data']['pickup_id'] ?? null;
                 $dbData['courier_name'] = $responseData['data']['courier_name'] ?? null;
                 $dbData['user_id'] = $user->id;
+                $dbData['status'] = 221;
 
 
                 $order = Order::create($dbData);
@@ -213,7 +207,9 @@ class OrderController extends Controller
      */
     public function list(Request $request)
     {
-        $data['orders'] = Order::where('user_id', Auth::user()->id)
+        $search = $request->search;
+
+        $baseQuery = Order::where('user_id', Auth::user()->id)
             ->select([
                 'id',
                 'client_order_id',
@@ -222,9 +218,21 @@ class OrderController extends Controller
                 'consignee_name',
                 'order_amount',
                 'payment_mode',
+                'status',
                 'created_at'
-            ])
-            ->get();
+            ]);
+
+        if (!empty($search)) {
+            $baseQuery->where('awb_number', 'LIKE', "%{$search}%");
+        }
+
+        $bookedQuery = clone $baseQuery;
+        $cancelledQuery = clone $baseQuery;
+        $allOrdersQuery = clone $baseQuery;
+
+        $data['bookedOrders'] = $bookedQuery->where('status', 221)->paginate(10, ['*'], 'booked_page');
+        $data['cancelledOrders'] = $cancelledQuery->where('status', 229)->paginate(10, ['*'], 'cancelled_page');
+        $data['allOrders'] = $allOrdersQuery->paginate(10, ['*'], 'all_page');
 
         return view('users.orders.list', $data);
     }
@@ -243,7 +251,7 @@ class OrderController extends Controller
     public function cancelOrder(CancelOrderRequest $request)
     {
         $awbNumber = $request->awb_number;
-        $order = Order::where('awb_number', $awbNumber)->get();
+        $order = Order::where('awb_number', $awbNumber)->first();
         $user = Auth::user();
 
         $url = 'https://app.parcelx.in/api/v1/order/cancel_order';
@@ -255,7 +263,7 @@ class OrderController extends Controller
         if ($response->successful() && isset($responseData['status']) && $responseData['status'] == true) {
             $user->logActivity($user, 'Order canceled successfully', 'order_canceled');
 
-
+            $order->update(['status' => '229']);
             return response()->json(['success' => true, 'message' => 'Order canceled successfully']);
         } else {
             $user->logActivity($user(), 'Exception: Order cancel Failed', 'order_failed');
