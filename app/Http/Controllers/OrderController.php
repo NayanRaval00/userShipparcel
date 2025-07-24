@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\EkartApiService;
 use App\Helpers\ParcelxHelper;
 use App\Http\Requests\CancelOrderRequest;
 use App\Models\Order;
@@ -48,68 +49,125 @@ class OrderController extends Controller
             return redirect()->back();
         }
 
-        $apiData = [
-            'client_order_id' => $request->order_id,
-            'consignee_emailid' => $request->consignee_emailid ?? '',
-            'consignee_pincode' => $request->consignee_pincode,
-            'consignee_mobile' => $request->consignee_mobile,
-            'consignee_phone' => $request->consignee_phone ?? '',
-            'consignee_address1' => $request->consignee_address1,
-            'consignee_address2' => $request->consignee_address2 ?? '',
-            'consignee_name' => $request->consignee_name,
-            'invoice_number' => $request->invoice_number,
-            'express_type' => 'surface',
-            'pick_address_id' => $request->pickup_address,
-            'return_address_id' => $request->is_return_address === 'true' ? $request->return_address : $request->pickup_address,
-            'cod_amount' => $request->cod_amount ?? '0',
-            'tax_amount' => $request->tax_amount ?? '0',
-            'mps' => $request->mps ?? '0',
-            'courier_type' => 1,
-            'courier_code' => 'PXDEL01',
-            'address_type' => $request->address_type ?? 'Home',
-            'payment_mode' => $request->payment_mode ?? 'Prepaid',
-            'order_amount' => $request->order_amount ?? '0.00',
-            'extra_charges' => $request->extra_charges ?? '0',
-            'shipment_width' => $request->shipment_width ?? ['1'],
-            'shipment_height' => $request->shipment_height ?? ['1'],
-            'shipment_length' => $request->shipment_length ?? ['1'],
-            'shipment_weight' => $request->shipment_weight ?? ['1'],
-            'products' => [],
-            'awb_number' => null,
-            'order_number' => null,
-            'job_id' => null,
-            'lrnum' => '',
-            'waybills_num_json' => null,
-            'lable_data' => null,
-            'routing_code' => null,
-            'partner_display_name' => null,
-            'pickup_id' => null,
-            'courier_name' => null,
+        $destinationAddress = [
+            'first_name' => $request->consignee_name,
+            'address_line1' => $request->consignee_address1,
+            'address_line2' => $request->consignee_address2 ?? '',
+            'pincode' => $request->consignee_pincode,
+            'city' => $request->consignee_city,
+            'state' => $request->consignee_state,
+            'primary_contact_number' => $request->consignee_mobile,
+            'email_id' => $request->consignee_emailid ?? ''
         ];
 
+        // Use destination address as default for source/return unless overridden
+        $sourceAddress = [
+            'first_name' => $request->source_name ?? $destinationAddress['first_name'],
+            'address_line1' => $request->source_address1 ?? $destinationAddress['address_line1'],
+            'address_line2' => $request->source_address2 ?? $destinationAddress['address_line2'],
+            'pincode' => $request->source_pincode ?? $destinationAddress['pincode'],
+            'city' => $request->source_city ?? $destinationAddress['city'],
+            'state' => $request->source_state ?? $destinationAddress['state'],
+            'primary_contact_number' => $request->source_mobile ?? $destinationAddress['primary_contact_number'],
+            'email_id' => $request->source_email ?? $destinationAddress['email_id'],
+        ];
 
+        $returnAddress = $request->is_return_address === 'true' ? [
+            'first_name' => $request->return_name,
+            'address_line1' => $request->return_address1,
+            'address_line2' => $request->return_address2 ?? '',
+            'pincode' => $request->return_pincode,
+            'city' => $request->return_city,
+            'state' => $request->return_state,
+            'primary_contact_number' => $request->return_mobile,
+            'email_id' => $request->return_email
+        ] : $sourceAddress;
+
+        $apiData = [
+            'client_name' => 'HRD',
+            'goods_category' => 'ESSENTIAL',
+            'services' => [
+                [
+                    'service_code' => 'ECONOMY',
+                    'service_details' => [
+                        [
+                            'service_leg' => 'FORWARD',
+                            'service_data' => [
+                                'service_types' => [
+                                    ['name' => 'regional_handover', 'value' => 'true'],
+                                    ['name' => 'delayed_dispatch', 'value' => 'false'],
+                                ],
+                                'vendor_name' => 'Ekart',
+                                'amount_to_collect' => (string) ($request->cod_amount ?? '0'),
+                                'dispatch_date' => now()->format('Y-m-d H:i:s'),
+                                'customer_promise_date' => null,
+                                'delivery_type' => 'SMALL',
+                                'source' => ['address' => $sourceAddress],
+                                'destination' => ['address' => $destinationAddress],
+                                'return_location' => ['address' => $returnAddress],
+                            ],
+                            'shipment' => [
+                                'client_reference_id' => $request->order_id,
+                                'tracking_id' => $request->order_id,
+                                'shipment_value' => (float) ($request->order_amount ?? 0),
+                                'shipment_dimensions' => [
+                                    'length' => ['value' => (float) ($request->shipment_length[0] ?? 10)],
+                                    'breadth' => ['value' => (float) ($request->shipment_width[0] ?? 10)],
+                                    'height' => ['value' => (float) ($request->shipment_height[0] ?? 10)],
+                                    'weight' => ['value' => (float) ($request->shipment_weight[0] ?? 10)],
+                                ],
+                                'return_label_desc_1' => null,
+                                'return_label_desc_2' => null,
+                                'shipment_items' => [],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        // Add shipment items
         if ($request->has('product_name') && is_array($request->product_name)) {
             foreach ($request->product_name as $index => $product_name) {
-                $product = [
-                    'product_sku' => $request->product_sku[$index] ?? '',
-                    'product_name' => $product_name,
-                    'product_value' => $request->product_value[$index] ?? '0',
-                    'product_hsnsac' => $request->product_hsnsac[$index] ?? '',
-                    'product_taxper' => $request->product_taxper[$index] ?? 0,
-                    'product_category' => $request->product_category[$index] ?? '',
-                    'product_quantity' => $request->product_quantity[$index] ?? '1',
-                    'product_description' => $request->product_description[$index] ?? '',
+                $apiData['services'][0]['service_details'][0]['shipment']['shipment_items'][] = [
+                    'product_id' => $request->product_sku[$index] ?? '',
+                    'category' => $request->product_category[$index] ?? 'Uncategorized',
+                    'product_title' => $product_name,
+                    'quantity' => (int) ($request->product_quantity[$index] ?? 1),
+                    'cost' => [
+                        'total_sale_value' => (float) ($request->product_value[$index] ?? 0),
+                        'total_tax_value' => (float) ($request->product_taxper[$index] ?? 0),
+                        'tax_breakup' => [
+                            'cgst' => 0,
+                            'sgst' => 0,
+                            'igst' => 0
+                        ]
+                    ],
+                    'seller_details' => [
+                        'seller_reg_name' => 'shiparcel',
+                        'gstin_id' => null
+                    ],
+                    'hsn' => $request->product_hsnsac[$index] ?? '',
+                    'ern' => null,
+                    'discount' => null,
+                    'item_attributes' => [
+                        ['name' => 'order_id', 'value' => '#ship001'],
+                        ['name' => 'invoice_id', 'value' => '#inv001'],
+                    ],
+                    'handling_attributes' => [
+                        ['name' => 'isFragile', 'value' => 'false'],
+                        ['name' => 'isDangerous', 'value' => 'false'],
+                    ]
                 ];
-                $apiData['products'][] = $product;
             }
         }
 
-        Log::info('API Request Data:', $apiData);
+        Log::info('Fixed API Request Data:', $apiData);
+
 
         try {
-            $url = 'https://app.parcelx.in/api/v3/order/create_order';
-            $response = ParcelxHelper::sendRequest($url, $apiData);
-
+            $url = 'https://api.ekartlogistics.com/v2/shipments/create';
+            $response = EkartApiService::sendRequest($url, $apiData);
             if ($response->successful()) {
                 $responseData = $response->json();
                 Log::info('API Response:', $responseData);
@@ -118,7 +176,7 @@ class OrderController extends Controller
                     session()->flash('error', $responseData['responsemsg'][0]);
                     return redirect()->back();
                 }
-
+                dd($responseData);
 
                 $dbData = $apiData;
                 $dbData['shipment_width'] = json_encode($apiData['shipment_width']);

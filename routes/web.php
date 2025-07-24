@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\EkartApiService;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserAuthController;
@@ -41,3 +42,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/login', [UserAuthController::class, 'login'])->name('admin-login');
 Route::post('/user-login', [UserAuthController::class, 'userLogin'])->name('custom.login.submit');
 Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
+
+Route::get('/generate-token/aaa', function () {
+    return EkartApiService::getBearerToken();
+});
