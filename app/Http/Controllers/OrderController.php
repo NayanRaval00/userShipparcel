@@ -60,28 +60,56 @@ class OrderController extends Controller
             'email_id' => $request->consignee_emailid ?? ''
         ];
 
-        // Use destination address as default for source/return unless overridden
+        // Always fetch pickup warehouse (source address)
+        $pickupWarehouse = Warehouse::where([
+            'status' => 1,
+            'user_id' => $user->id,
+            'id' => $request->pickup_address
+        ])->first();
+
+        // If return address is enabled, fetch it; else, we'll use pickupWarehouse again
+        $returnWarehouse = null;
+        if ($request->is_return_address === 'on') {
+            $returnWarehouse = Warehouse::where([
+                'status' => 1,
+                'user_id' => $user->id,
+                'id' => $request->return_address
+            ])->first();
+        }
+
+        // Destination Address (using pickupWarehouse values)
         $sourceAddress = [
-            'first_name' => $request->source_name ?? $destinationAddress['first_name'],
-            'address_line1' => $request->source_address1 ?? $destinationAddress['address_line1'],
-            'address_line2' => $request->source_address2 ?? $destinationAddress['address_line2'],
-            'pincode' => $request->source_pincode ?? $destinationAddress['pincode'],
-            'city' => $request->source_city ?? $destinationAddress['city'],
-            'state' => $request->source_state ?? $destinationAddress['state'],
-            'primary_contact_number' => $request->source_mobile ?? $destinationAddress['primary_contact_number'],
-            'email_id' => $request->source_email ?? $destinationAddress['email_id'],
+            'first_name' => $pickupWarehouse->sender_name ?? '',
+            'address_line1' => $pickupWarehouse->full_address ?? '',
+            'address_line2' => $pickupWarehouse->address_title ?? '',
+            'pincode' => $pickupWarehouse->pincode ?? '',
+            'city' => '',
+            'state' => '',
+            'primary_contact_number' => $pickupWarehouse->phone ?? '',
+            'email_id' => '',
         ];
 
-        $returnAddress = $request->is_return_address === 'true' ? [
-            'first_name' => $request->return_name,
-            'address_line1' => $request->return_address1,
-            'address_line2' => $request->return_address2 ?? '',
-            'pincode' => $request->return_pincode,
-            'city' => $request->return_city,
-            'state' => $request->return_state,
-            'primary_contact_number' => $request->return_mobile,
-            'email_id' => $request->return_email
+        // Return Address: if return is enabled, use return warehouse; else, use destinationAddress
+        $returnAddress = $request->is_return_address === 'on' ? [
+            'first_name' => $returnWarehouse->sender_name ?? '',
+            'address_line1' => $returnWarehouse->full_address ?? '',
+            'address_line2' => $returnWarehouse->address_title ?? '',
+            'pincode' => $returnWarehouse->pincode ?? '',
+            'city' => '',
+            'state' => '',
+            'primary_contact_number' => $returnWarehouse->phone ?? '',
+            'email_id' => '',
         ] : $sourceAddress;
+
+        //generate tracking id
+
+        $base = 1000000001;
+        $maxOffset = 999999; // You can adjust how many unique numbers you want
+        $randomNumber = $base + rand(0, $maxOffset);
+
+        $paymentMode = $request->payment_mode ?? 'prepaid';
+        $modeCode = ($paymentMode === 'Cod') ? 'C' : 'P';
+        $Tracking_id = 'HRD' . $modeCode . $randomNumber;
 
         $apiData = [
             'client_name' => 'HRD',
@@ -98,7 +126,7 @@ class OrderController extends Controller
                                     ['name' => 'delayed_dispatch', 'value' => 'false'],
                                 ],
                                 'vendor_name' => 'Ekart',
-                                'amount_to_collect' => (string) ($request->cod_amount ?? '0'),
+                                'amount_to_collect' => (string) ($request->total_amount ?? '0'),
                                 'dispatch_date' => now()->format('Y-m-d H:i:s'),
                                 'customer_promise_date' => null,
                                 'delivery_type' => 'SMALL',
@@ -107,14 +135,14 @@ class OrderController extends Controller
                                 'return_location' => ['address' => $returnAddress],
                             ],
                             'shipment' => [
-                                'client_reference_id' => $request->order_id,
-                                'tracking_id' => $request->order_id,
-                                'shipment_value' => (float) ($request->order_amount ?? 0),
+                                'client_reference_id' => $Tracking_id,
+                                'tracking_id' => $Tracking_id,
+                                'shipment_value' => (float) ($request->total_amount ?? 0),
                                 'shipment_dimensions' => [
-                                    'length' => ['value' => (float) ($request->shipment_length[0] ?? 10)],
-                                    'breadth' => ['value' => (float) ($request->shipment_width[0] ?? 10)],
-                                    'height' => ['value' => (float) ($request->shipment_height[0] ?? 10)],
-                                    'weight' => ['value' => (float) ($request->shipment_weight[0] ?? 10)],
+                                    'length' => ['value' => (float) ($request->shipment_length[0] ?? 0.5)],
+                                    'breadth' => ['value' => (float) ($request->shipment_width[0] ?? 0.5)],
+                                    'height' => ['value' => (float) ($request->shipment_height[0] ?? 0.5)],
+                                    'weight' => ['value' => (float) ($request->shipment_weight[0] ?? 0.5)],
                                 ],
                                 'return_label_desc_1' => null,
                                 'return_label_desc_2' => null,
@@ -147,12 +175,12 @@ class OrderController extends Controller
                         'seller_reg_name' => 'shiparcel',
                         'gstin_id' => null
                     ],
-                    'hsn' => $request->product_hsnsac[$index] ?? '',
+                    'hsn' => $request->product_sku[$index] ?? '',
                     'ern' => null,
                     'discount' => null,
                     'item_attributes' => [
-                        ['name' => 'order_id', 'value' => '#ship001'],
-                        ['name' => 'invoice_id', 'value' => '#inv001'],
+                        ['name' => 'order_id', 'value' => $Tracking_id ?? ''],
+                        ['name' => 'invoice_id', 'value' => $Tracking_id ?? ''],
                     ],
                     'handling_attributes' => [
                         ['name' => 'isFragile', 'value' => 'false'],
@@ -164,8 +192,11 @@ class OrderController extends Controller
 
         Log::info('Fixed API Request Data:', $apiData);
 
+        // dd($apiData);
 
         try {
+
+            // dd($apiData);
             $url = 'https://api.ekartlogistics.com/v2/shipments/create';
             $response = EkartApiService::sendRequest($url, $apiData);
             if ($response->successful()) {
@@ -332,7 +363,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Order Label Data 
+     * Order Label Data
      * */
     public function orderLabelData(CancelOrderRequest $request)
     {

@@ -62,7 +62,7 @@
                                         data-live-search="true" tabindex="null" required>
                                         <option value="">Select</option>
                                         @foreach ($warehouses as $warehouse)
-                                        <option value="{{ $warehouse->pick_address_id }}">
+                                        <option value="{{ $warehouse->id }}">
                                             {{ $warehouse->address_title }}
                                         </option>
                                         @endforeach
@@ -92,7 +92,7 @@
                                         data-live-search="true" tabindex="null">
                                         <option value="">Select</option>
                                         @foreach ($warehouses as $warehouse)
-                                        <option value="{{ $warehouse->pick_address_id }}">
+                                        <option value="{{ $warehouse->id }}">
                                             {{ $warehouse->address_title }}
                                         </option>
                                         @endforeach
