@@ -19,9 +19,6 @@ class WareHouseController extends Controller
     public function create(CreateWarehouseRequest $request)
     {
         $user = Auth::user();
-        $access_key = env('PARCELX_ACCESS_KEY');
-        $secret_key = env('PARCELX_SECRET_KEY');
-        $auth_token = base64_encode($access_key . ':' . $secret_key);
 
         $data = [
             'address_title' => $request->address_title,
@@ -33,42 +30,22 @@ class WareHouseController extends Controller
             'state' => $request->state,
             'user_id' => $user->id
         ];
+
         Log::info('data', $data);
+
         try {
-            $response = Http::withHeaders([
-                'access-token' => $auth_token,
-            ])
-                ->withOptions(['verify' => false])
-                ->post('https://app.parcelx.in/api/v1/create_warehouse', $data);
+            $warehouse = Warehouse::create($data);
 
-            if ($response->successful()) {
-                $responseData = $response->json();
-                Log::info('API Response:', $responseData);
-                $warehouse = Warehouse::create($data);
+            $user->logActivity($user, 'Warehouse created successfully', 'warehouse_created');
 
-                if (isset($responseData['data']['pick_address_id'])) {
-                    $warehouse->update([
-                        'pick_address_id' => $responseData['data']['pick_address_id'],
-                    ]);
-                }
-                $user->logActivity($user, 'warehouse created successfully', 'warehouse_created');
-
-                return redirect()->back()->with('success', 'Warehouse created successfully!');
-            } else {
-                $user->logActivity($user, 'warehouse created An error occurred', 'warehouse_created');
-
-                $responseBody = $response->json();
-                $errorMessage = $responseBody['responsemsg'] ?? 'Unknown error occurred';
-                Log::info('API Error:', ['response' => $responseBody]);
-
-                return redirect()->back()->with('error', $errorMessage);
-            }
+            return redirect()->back()->with('success', 'Warehouse created successfully!');
         } catch (Exception $e) {
-            $user->logActivity($user, 'warehouse created An error occurred', 'warehouse_created');
+            $user->logActivity($user, 'An error occurred while creating warehouse', 'warehouse_created');
 
             Log::error('Exception:', ['message' => $e->getMessage()]);
 
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
+
 }
