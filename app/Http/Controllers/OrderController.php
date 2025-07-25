@@ -60,28 +60,56 @@ class OrderController extends Controller
             'email_id' => $request->consignee_emailid ?? ''
         ];
 
-        // Use destination address as default for source/return unless overridden
+        // Always fetch pickup warehouse (source address)
+        $pickupWarehouse = Warehouse::where([
+            'status' => 1,
+            'user_id' => $user->id,
+            'id' => $request->pickup_address
+        ])->first();
+
+        // If return address is enabled, fetch it; else, we'll use pickupWarehouse again
+        $returnWarehouse = null;
+        if ($request->is_return_address === 'on') {
+            $returnWarehouse = Warehouse::where([
+                'status' => 1,
+                'user_id' => $user->id,
+                'id' => $request->return_address
+            ])->first();
+        }
+
+        // Destination Address (using pickupWarehouse values)
         $sourceAddress = [
-            'first_name' => $request->source_name ?? $destinationAddress['first_name'],
-            'address_line1' => $request->source_address1 ?? $destinationAddress['address_line1'],
-            'address_line2' => $request->source_address2 ?? $destinationAddress['address_line2'],
-            'pincode' => $request->source_pincode ?? $destinationAddress['pincode'],
+            'first_name' => $pickupWarehouse->sender_name ?? '',
+            'address_line1' => $pickupWarehouse->full_address ?? '',
+            'address_line2' => $pickupWarehouse->address_title ?? '',
+            'pincode' => $pickupWarehouse->pincode ?? '',
             'city' => $request->source_city ?? $destinationAddress['city'],
             'state' => $request->source_state ?? $destinationAddress['state'],
-            'primary_contact_number' => $request->source_mobile ?? $destinationAddress['primary_contact_number'],
-            'email_id' => $request->source_email ?? $destinationAddress['email_id'],
+            'primary_contact_number' => $pickupWarehouse->phone ?? '',
+            'email_id' => '',
         ];
 
-        $returnAddress = $request->is_return_address === 'true' ? [
-            'first_name' => $request->return_name,
-            'address_line1' => $request->return_address1,
-            'address_line2' => $request->return_address2 ?? '',
-            'pincode' => $request->return_pincode,
-            'city' => $request->return_city,
-            'state' => $request->return_state,
-            'primary_contact_number' => $request->return_mobile,
-            'email_id' => $request->return_email
+        // Return Address: if return is enabled, use return warehouse; else, use destinationAddress
+        $returnAddress = $request->is_return_address === 'on' ? [
+            'first_name' => $returnWarehouse->sender_name ?? '',
+            'address_line1' => $returnWarehouse->full_address ?? '',
+            'address_line2' => $returnWarehouse->address_title ?? '',
+            'pincode' => $returnWarehouse->pincode ?? '',
+            'city' => $request->source_city ?? $destinationAddress['city'],
+            'state' => $request->source_state ?? $destinationAddress['state'],
+            'primary_contact_number' => $returnWarehouse->phone ?? '',
+            'email_id' => '',
         ] : $sourceAddress;
+
+        //generate tracking id
+
+        $base = 1000000001;
+        $maxOffset = 999999; // You can adjust how many unique numbers you want
+        $randomNumber = $base + rand(0, $maxOffset);
+
+        $paymentMode = $request->payment_mode ?? 'prepaid';
+        $modeCode = ($paymentMode === 'Cod') ? 'C' : 'P';
+        $Tracking_id = 'HRD' . $modeCode . $randomNumber;
 
         $apiData = [
             'client_name' => 'HRD',
@@ -98,7 +126,7 @@ class OrderController extends Controller
                                     ['name' => 'delayed_dispatch', 'value' => 'false'],
                                 ],
                                 'vendor_name' => 'Ekart',
-                                'amount_to_collect' => (string) ($request->cod_amount ?? '0'),
+                                'amount_to_collect' => (string) ($request->total_amount ?? '0'),
                                 'dispatch_date' => now()->format('Y-m-d H:i:s'),
                                 'customer_promise_date' => null,
                                 'delivery_type' => 'SMALL',
@@ -107,14 +135,14 @@ class OrderController extends Controller
                                 'return_location' => ['address' => $returnAddress],
                             ],
                             'shipment' => [
-                                'client_reference_id' => $request->order_id,
-                                'tracking_id' => $request->order_id,
-                                'shipment_value' => (float) ($request->order_amount ?? 0),
+                                'client_reference_id' => $Tracking_id,
+                                'tracking_id' => $Tracking_id,
+                                'shipment_value' => (float) ($request->total_amount ?? 0),
                                 'shipment_dimensions' => [
-                                    'length' => ['value' => (float) ($request->shipment_length[0] ?? 10)],
-                                    'breadth' => ['value' => (float) ($request->shipment_width[0] ?? 10)],
-                                    'height' => ['value' => (float) ($request->shipment_height[0] ?? 10)],
-                                    'weight' => ['value' => (float) ($request->shipment_weight[0] ?? 10)],
+                                    'length' => ['value' => (float) ($request->shipment_length[0] ?? 0.5)],
+                                    'breadth' => ['value' => (float) ($request->shipment_width[0] ?? 0.5)],
+                                    'height' => ['value' => (float) ($request->shipment_height[0] ?? 0.5)],
+                                    'weight' => ['value' => (float) ($request->shipment_weight[0] ?? 0.5)],
                                 ],
                                 'return_label_desc_1' => null,
                                 'return_label_desc_2' => null,
@@ -126,6 +154,7 @@ class OrderController extends Controller
             ]
         ];
 
+        $productDataForDb = [];
         // Add shipment items
         if ($request->has('product_name') && is_array($request->product_name)) {
             foreach ($request->product_name as $index => $product_name) {
@@ -147,55 +176,97 @@ class OrderController extends Controller
                         'seller_reg_name' => 'shiparcel',
                         'gstin_id' => null
                     ],
-                    'hsn' => $request->product_hsnsac[$index] ?? '',
+                    'hsn' => $request->product_sku[$index] ?? '',
                     'ern' => null,
                     'discount' => null,
                     'item_attributes' => [
-                        ['name' => 'order_id', 'value' => '#ship001'],
-                        ['name' => 'invoice_id', 'value' => '#inv001'],
+                        ['name' => 'order_id', 'value' => $request->order_id ?? ''],
+                        ['name' => 'invoice_id', 'value' => $Tracking_id ?? ''],
                     ],
                     'handling_attributes' => [
                         ['name' => 'isFragile', 'value' => 'false'],
                         ['name' => 'isDangerous', 'value' => 'false'],
                     ]
                 ];
+
+                $productDataForDb[] = [
+                    'product_sku' => $request->product_sku[$index] ?? '',
+                    'product_name' => $product_name,
+                    'product_value' => (float) ($request->product_value[$index] ?? 0),
+                    'product_hsnsac' => $request->product_sku[$index] ?? '', // Assuming SKU is same as HSN/SAC
+                    'product_taxper' => (float) ($request->product_taxper[$index] ?? 0),
+                    'product_category' => $request->product_category[$index] ?? 'Uncategorized',
+                    'product_quantity' => (int) ($request->product_quantity[$index] ?? 1),
+                    'product_description' => '', // If not available in form, leave blank or map if exists
+                ];
             }
         }
 
         Log::info('Fixed API Request Data:', $apiData);
 
+        // dd($apiData);
 
         try {
+
+            // dd($apiData);
             $url = 'https://api.ekartlogistics.com/v2/shipments/create';
             $response = EkartApiService::sendRequest($url, $apiData);
+            // dd($response);
             if ($response->successful()) {
+                // dd($apiData);
                 $responseData = $response->json();
                 Log::info('API Response:', $responseData);
+                $response = $responseData['response'][0] ?? [];
 
-                if (!$responseData['status']) {
+                if (!$response['status']) {
                     session()->flash('error', $responseData['responsemsg'][0]);
                     return redirect()->back();
                 }
-                dd($responseData);
+                // dd($responseData);
 
                 $dbData = $apiData;
-                $dbData['shipment_width'] = json_encode($apiData['shipment_width']);
-                $dbData['shipment_height'] = json_encode($apiData['shipment_height']);
-                $dbData['shipment_length'] = json_encode($apiData['shipment_length']);
-                $dbData['shipment_weight'] = json_encode($apiData['shipment_weight']);
-                $dbData['products'] = json_encode($apiData['products']);
+                $dbData['shipment_width'] = $request->shipment_width[0] ?? '0.5';
+                $dbData['shipment_height'] = $request->shipment_height[0] ?? '0.5';
+                $dbData['shipment_length'] = $request->shipment_length[0] ?? '0.5';
+                $dbData['shipment_weight'] = $request->shipment_weight[0] ?? '0.5';
+                $dbData['order_amount'] = (float) ($request->total_amount ?? 0);
+                $dbData['payment_mode'] = $request->payment_mode;
+
+                $dbData['client_order_id']       = $request->order_id;
+                $dbData['consignee_emailid']     = $request->consignee_emailid ?? '';
+                $dbData['consignee_pincode']     = $request->consignee_pincode;
+                $dbData['consignee_mobile']      = $request->consignee_mobile;
+                $dbData['consignee_phone']       = $request->consignee_phone ?? '';
+                $dbData['consignee_address1']    = $request->consignee_address1;
+                $dbData['consignee_address2']    = $request->consignee_address2 ?? '';
+                $dbData['consignee_name']        = $request->consignee_name;
 
 
-                $dbData['awb_number'] = $responseData['data']['awb_number'] ?? null;
-                $dbData['order_number'] = $responseData['data']['order_number'] ?? null;
-                $dbData['job_id'] = $responseData['data']['job_id'] ?? null;
-                $dbData['lrnum'] = $responseData['data']['lrnum'] ?? '';
-                $dbData['waybills_num_json'] = $responseData['data']['waybills_num_json'] ?? null;
-                $dbData['lable_data'] = $responseData['data']['lable_data'] ?? null;
-                $dbData['routing_code'] = $responseData['data']['routing_code'] ?? null;
-                $dbData['partner_display_name'] = $responseData['data']['partner_display_name'] ?? null;
-                $dbData['pickup_id'] = $responseData['data']['pickup_id'] ?? null;
-                $dbData['courier_name'] = $responseData['data']['courier_name'] ?? null;
+                // $response = $responseData['response'][0] ?? [];
+
+                $dbData['ekart_tracking_id'] = $response['tracking_id'] ?? null;
+                $dbData['ekart_shipment_payment_link'] = $response['shipment_payment_link'] ?? null;
+                $dbData['ekart_api_status'] = $response['status'] ?? null;
+                $dbData['ekart_api_status_code'] = $response['status_code'] ?? null;
+                $dbData['ekart_is_parked'] = $response['is_parked'] ?? null;
+                $dbData['ekart_request_id'] = $responseData['request_id'] ?? null;
+
+                // Optional: User & status fields
+                $dbData['user_id'] = $user->id;
+                $dbData['status'] = 221;
+
+
+                $dbData['awb_number'] = $Tracking_id ?? null;
+                $dbData['order_number'] = $request->order_id ?? null;
+                // $dbData['job_id'] = $responseData['data']['job_id'] ?? null;
+                // $dbData['lrnum'] = $responseData['data']['lrnum'] ?? '';
+                // $dbData['waybills_num_json'] = $responseData['data']['waybills_num_json'] ?? null;
+                // $dbData['lable_data'] = $responseData['data']['lable_data'] ?? null;
+                // $dbData['routing_code'] = $responseData['data']['routing_code'] ?? null;
+                $dbData['partner_display_name'] = 'Ekart';
+                $dbData['pick_address_id'] = $request->pickup_address;
+                $dbData['return_address_id'] = $request->return_address ?? $request->pickup_address;
+                $dbData['courier_name'] = 'Ekart';
                 $dbData['user_id'] = $user->id;
                 $dbData['status'] = 221;
 
@@ -203,13 +274,13 @@ class OrderController extends Controller
                 $order = Order::create($dbData);
 
 
-                foreach ($apiData['products'] as $product) {
+                foreach ($productDataForDb as $product) {
                     $product['order_id'] = $order->id;
                     Product::create($product);
                 }
 
                 // Deduct wallet charge
-                $chargeableAmount;
+                // $chargeableAmount;
                 // $totalAmount = Wallet::where('user_id', $user->id)->first();
                 // $updatedAmount = $totalAmount->amount - $chargeableAmount;
 
@@ -240,9 +311,9 @@ class OrderController extends Controller
                 foreach ($walletTransactions as $transaction) {
                     $transaction->update(['status' => 102]);
                 }
-                $user->logActivity($user, 'Order created successfully', 'order_created');
+                // $user->logActivity($user, 'Order created successfully', 'order_created');
 
-                session()->flash('success', 'Order placed successfully! AWB: ' . $responseData['data']['awb_number']);
+                session()->flash('success', 'Order placed successfully! Tracking Id: ' . $response['tracking_id']);
                 return redirect()->back();
             } else {
                 $responseBody = $response->json();
@@ -252,7 +323,7 @@ class OrderController extends Controller
                 return redirect()->back();
             }
         } catch (Exception $e) {
-            $user->logActivity($e->getMessage(), 'Exception: Order Creation Failed', 'order_failed');
+            // $user->logActivity($e->getMessage(), 'Exception: Order Creation Failed', 'order_failed');
 
             Log::error('Exception:', ['message' => $e->getMessage()]);
             session()->flash('error', 'An error occurred: ' . $e->getMessage());
@@ -332,7 +403,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Order Label Data 
+     * Order Label Data
      * */
     public function orderLabelData(CancelOrderRequest $request)
     {

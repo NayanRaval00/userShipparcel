@@ -29,6 +29,8 @@ class WareHouseController extends Controller
             'full_address' => $request->full_address,
             'phone' => $request->phone,
             'pincode' => $request->pincode,
+            'city' => $request->city,
+            'state' => $request->state,
             'user_id' => $user->id
         ];
         Log::info('data', $data);

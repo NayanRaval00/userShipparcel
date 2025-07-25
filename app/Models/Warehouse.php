@@ -15,7 +15,9 @@ class Warehouse extends Model
         'full_address',
         'phone',
         'pincode',
+        'state',
+        'city',
         'user_id',
-        'pick_address_id'   
+        'pick_address_id'
     ];
 }

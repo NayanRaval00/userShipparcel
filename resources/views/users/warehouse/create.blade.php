@@ -69,6 +69,20 @@
                                     placeholder="Enter Pincode" name="pincode" />
                                 <small class="text-danger" id="pincode_error"></small>
                             </div>
+                            <div class="form-group">
+                                <label class="form-label">city
+                                    <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="city"
+                                    placeholder="Enter Pincode" name="city" />
+                                <small class="text-danger" id="city"></small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">State
+                                    <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="state"
+                                    placeholder="Enter Pincode" name="state" />
+                                <small class="text-danger" id="state"></small>
+                            </div>
                             <div class="form-group mt-6">
                                 <button type="button" id="submitButton" class="btn btn-primary mr-2">Submit</button>
                                 <button type="reset" class="btn btn-secondary">Cancel</button>
