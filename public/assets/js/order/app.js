@@ -233,33 +233,62 @@ function showMessage(message, type) {
     }, 5000);
 }
 
-function openLabelData(awbNumber) {
+// function openLabelData(awbNumber) {
 
+//     if (!awbNumber) {
+//         showMessage("AWB number is missing!", "danger");
+//         return;
+//     }
+
+//     $.ajax({
+//         url: ORDER_LABEL_URL,
+//         type: 'POST',
+//         data: JSON.stringify({
+//             awb_number: awbNumber
+//         }),
+//         contentType: 'application/json',
+//         headers: {
+//             'X-CSRF-TOKEN': CSRF_TOKEN
+//         },
+//         success: function (response) {
+//             showMessage(response.message, 'success');
+//             window.open(response.label_url, '_blank');
+//             setTimeout(() => location.reload(), 2000); // Reload after success
+//         },
+//         error: function (xhr) {
+//             let response = xhr.responseJSON;
+//             let errorMessage = response && response.message ? response.message : 'Something went wrong!';
+//             showMessage(errorMessage, 'danger');
+
+//         }
+//     });
+// }
+
+function openLabelData(awbNumber) {
     if (!awbNumber) {
         showMessage("AWB number is missing!", "danger");
         return;
     }
 
-    $.ajax({
-        url: ORDER_LABEL_URL,
-        type: 'POST',
-        data: JSON.stringify({
-            awb_number: awbNumber
-        }),
-        contentType: 'application/json',
-        headers: {
-            'X-CSRF-TOKEN': CSRF_TOKEN
-        },
-        success: function (response) {
-            showMessage(response.message, 'success');
-            window.open(response.label_url, '_blank');
-            setTimeout(() => location.reload(), 2000); // Reload after success
-        },
-        error: function (xhr) {
-            let response = xhr.responseJSON;
-            let errorMessage = response && response.message ? response.message : 'Something went wrong!';
-            showMessage(errorMessage, 'danger');
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = ORDER_LABEL_URL; // this should point to your Laravel route
+    form.target = '_blank';
 
-        }
-    });
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = CSRF_TOKEN; // make sure CSRF_TOKEN is defined globally
+
+    const awbInput = document.createElement('input');
+    awbInput.type = 'hidden';
+    awbInput.name = 'awb_number';
+    awbInput.value = awbNumber;
+
+    form.appendChild(csrfInput);
+    form.appendChild(awbInput);
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
 }
+

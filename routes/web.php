@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('order-label-data', [OrderController::class, 'orderLabelData'])->name('order.label-data');
 
 
+
     /**Wallet */
     Route::get('wallet', [WalletController::class, 'show'])->name('wallet');
     Route::get('/wallet/fetchRates', [WalletController::class, 'fetchRates'])->name('wallet.fetchRates');

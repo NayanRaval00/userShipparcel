@@ -13,6 +13,7 @@ use App\Models\Warehouse;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
@@ -419,16 +420,71 @@ class OrderController extends Controller
     {
         $awbNumber = $request->awb_number;
 
-        $url = 'https://app.parcelx.in/api/v1/label?awb=' . $awbNumber . '&label_type=label';
+        // Raw query joining orders, users, and products via pivot (order_product)
+        $orderData = DB::table('shiparcel_orders')
+            ->join('users', 'shiparcel_orders.user_id', '=', 'users.id')
+            ->join('shiparcel_warehouses as pickup_warehouse', 'shiparcel_orders.pick_address_id', '=', 'pickup_warehouse.id')
+            ->join('shiparcel_warehouses as return_warehouse', 'shiparcel_orders.return_address_id', '=', 'return_warehouse.id')
+            ->select(
+                // Order table
+                'shiparcel_orders.id',
+                'shiparcel_orders.client_order_id',
+                'shiparcel_orders.consignee_emailid',
+                'shiparcel_orders.consignee_pincode',
+                'shiparcel_orders.consignee_mobile',
+                'shiparcel_orders.consignee_phone',
+                'shiparcel_orders.consignee_address1',
+                'shiparcel_orders.consignee_address2',
+                'shiparcel_orders.consignee_name',
+                'shiparcel_orders.invoice_number',
+                'shiparcel_orders.express_type',
+                'shiparcel_orders.pick_address_id',
+                'shiparcel_orders.return_address_id',
+                'shiparcel_orders.cod_amount',
+                'shiparcel_orders.tax_amount',
+                'shiparcel_orders.order_amount',
+                'shiparcel_orders.payment_mode',
+                'shiparcel_orders.courier_type',
+                'shiparcel_orders.awb_number',
+                'shiparcel_orders.order_number',
+                'shiparcel_orders.partner_display_name',
+                'shiparcel_orders.courier_code',
+                'shiparcel_orders.pickup_id',
+                'shiparcel_orders.courier_name',
+                'shiparcel_orders.user_id',
+                'shiparcel_orders.status',
+                'shiparcel_orders.created_at',
+                'shiparcel_orders.shipment_weight',
 
-        $response = ParcelxHelper::sendGETRequest($url, []);
-        $responseData = $response->json();
+                // Pickup address fields (aliased)
+                'pickup_warehouse.address_title as pickup_address_title',
+                'pickup_warehouse.sender_name as pickup_sender_name',
+                'pickup_warehouse.full_address as pickup_full_address',
+                'pickup_warehouse.phone as pickup_phone',
+                'pickup_warehouse.pincode as pickup_pincode',
+                'pickup_warehouse.state as pickup_state',
+                'pickup_warehouse.city as pickup_city',
 
-        if ($response->successful() && isset($responseData['status']) && $responseData['status'] == true) {
-            return response()->json(['success' => true, 'message' => 'Order label data get successfully', 'label_url' => $responseData['label_url']]);
-        } else {
-            $errorMsg = $responseData['responsemsg'] ?? 'Failed to get order label data';
-            return response()->json(['success' => false, 'message' => $errorMsg], 400);
+                // Return address fields (aliased)
+                'return_warehouse.address_title as return_address_title',
+                'return_warehouse.sender_name as return_sender_name',
+                'return_warehouse.full_address as return_full_address',
+                'return_warehouse.phone as return_phone',
+                'return_warehouse.pincode as return_pincode',
+                'return_warehouse.state as return_state',
+                'return_warehouse.city as return_city',
+
+                // User fields
+                'users.name as customer_name',
+                'users.email as customer_email'
+            )
+            ->where('shiparcel_orders.awb_number', $awbNumber)
+            ->first();
+
+        if (!$orderData) {
+            abort(404, 'Order not found.');
         }
+
+        return view('users.orders.print_label', compact('orderData', 'awbNumber'));
     }
 }
