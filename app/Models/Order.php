@@ -43,12 +43,19 @@ class Order extends Model
         'pickup_id',
         'courier_name',
         'user_id',
-        'status'
+        'status',
+        'ekart_tracking_id',
+        'ekart_shipment_payment_link',
+        'ekart_api_status',
+        'ekart_is_parked',
+        'ekart_request_id',
+        'ekart_api_status_code',
+
 
     ];
 
     public function productsData(): HasMany
     {
        return $this->hasMany(Product::class, 'order_id', 'id');
-    }    
+    }
 }
