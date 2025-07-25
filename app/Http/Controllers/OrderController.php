@@ -25,12 +25,12 @@ class OrderController extends Controller
         $user = Auth::user();
         $chargeableAmount = $user->chargeable_amount;
 
-        // $totalAmount = Wallet::where('user_id', $user->id)->first();
-        // if (!$totalAmount) {
-        //     session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
-        // } elseif ($totalAmount->amount < $chargeableAmount) {
-        //     session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
-        // }
+        $totalAmount = Wallet::where('user_id', $user->id)->first();
+        if (!$totalAmount) {
+            session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
+        } elseif ($totalAmount->amount < $chargeableAmount) {
+            session()->flash('error', 'Insufficient Balance Please Recharge Wallet!!');
+        }
 
         $data['warehouses'] = Warehouse::where(['status' => 1, 'user_id' => $user->id])->get();
         return view('users.orders.create', $data);
@@ -43,6 +43,16 @@ class OrderController extends Controller
     {
         $user = Auth::user();
         $chargeableAmount = $user->chargeable_amount;
+
+        // Get the wallet record for the user
+        $wallet = Wallet::where('user_id', $user->id)->first();
+
+        // Check for no wallet, insufficient funds, or negative balance
+        if (!$wallet || $wallet->amount <= 0 || $wallet->amount < $chargeableAmount) {
+            session()->flash('error', 'Insufficient Balance. Please recharge your wallet!');
+            return redirect()->back();
+        }
+
 
         if (!$request->has('product_name') || empty($request->product_name)) {
             session()->flash('error', 'The products field is required.');
