@@ -179,7 +179,7 @@ class OrderController extends Controller
                     'ern' => null,
                     'discount' => null,
                     'item_attributes' => [
-                        ['name' => 'order_id', 'value' => $Tracking_id ?? ''],
+                        ['name' => 'order_id', 'value' => $request->order_id ?? ''],
                         ['name' => 'invoice_id', 'value' => $Tracking_id ?? ''],
                     ],
                     'handling_attributes' => [
