@@ -163,14 +163,14 @@
             <tr style="vertical-align: baseline;">
                 <td class="d-flex align-items-center justify-content-between py-3 border-0">
                     <h3 class="w-75">
-                        {{ $orderData->customer_name }}</h3>
+                        {{ $orderData->customer_name ?? '' }}</h3>
 
                 </td>
                 <td class="text-center">
-                    <img src="{{ asset('assets/images/ekart.png') }}" alt="{{ $orderData->courier_name }}"
+                    <img src="{{ asset('assets/images/ekart.png') }}" alt="{{ $orderData->courier_name ?? '' }}"
                         style="width: 100%;">
 
-                    <p style="font-size: 14px; margin-bottom:0px" class="extype"><b></b> {{ $orderData->express_type }} </p>
+                    <p style="font-size: 14px; margin-bottom:0px" class="extype"><b></b> {{ $orderData->express_type ?? '' }} </p>
                 </td>
             </tr>
             <tr>
@@ -179,13 +179,13 @@
                     <img id="barcodebarcode_1" style="width: 50% !important; height: 100px; margin: 10px"
                         src="data:image/png;base64,{{ DNS1D::getBarcodePNG($orderData->awb_number, 'C128') }}"
                         alt="barcode" /><br>
-                        {{ $orderData->awb_number }}
+                        {{ $orderData->awb_number ?? '' }}
                 </td>
 
                 <td class="text-center">
 
                     <br>
-                    <h4><b>({{ $orderData->payment_mode }})</b></h4>
+                    <h4><b>({{ $orderData->payment_mode ?? ''  }})</b></h4>
                 </td>
 
             </tr>
@@ -193,28 +193,28 @@
                 <td class="address-cell" style="width: 70%;">
                     <p>Deliver To:
                     </p>
-                    <h4 class="mb5">{{ $orderData->consignee_name }}</h4>
+                    <h4 class="mb5">{{ $orderData->consignee_name ?? ''  }}</h4>
                     <p class="mb5">
-                        {{ $orderData->consignee_mobile }} </p>
+                        {{ $orderData->consignee_mobile ?? ''  }} </p>
 
                     <p style="word-break: break-word !important;"><span><b>Address:</b></span>
-                        {{ $orderData->consignee_address1 }} </p>
-                    <p>{{ $orderData->consignee_address2 }}</p>
-                    <p>Pin - {{ $orderData->consignee_pincode }}</p>
+                        {{ $orderData->consignee_address1  ?? ''  }} </p>
+                    <p>{{ $orderData->consignee_address2 ?? ''  }}</p>
+                    <p>Pin - {{ $orderData->consignee_pincode ?? ''  }}</p>
                 </td>
 
                 <td>
                     <!-- <p>Order Details</p> -->
                     <!-- <h6 class="mb5">GSTIN: </h6> -->
-                    <h6 class="mb5"><b>Order Id:</b> {{ $orderData->client_order_id }}</h6>
+                    <h6 class="mb5"><b>Order Id:</b> {{ $orderData->client_order_id ?? ''  }}</h6>
                     {{-- <h6 class="mb5">
                         <b>Ref./Invoice#:</b><br>
                         PX13659825
                     </h6> --}}
                     <h6 class="mb5">Date: {{ \Carbon\Carbon::parse($orderData->created_at)->format('d-m-Y') }}</h6>
-                    <h6 class="mb5">Weight: {{ $orderData->shipment_weight }} kg</h6>
+                    <h6 class="mb5">Weight: {{ $orderData->shipment_weight ?? ''  }} kg</h6>
 
-                    <h6 class="mb5">Invoice Value: Rs. {{ $orderData->order_amount }} </h6>
+                    <h6 class="mb5">Invoice Value: Rs. {{ $orderData->order_amount ?? ''  }} </h6>
                 </td>
             </tr>
             <tr style="padding-top: 2px;">
@@ -240,10 +240,10 @@
                         <tbody>
                             @foreach ($products as $product)
                                 <tr>
-                                    <td colspan="2">{{ $product->product_name }}</td>
-                                    <td>{{ $product->product_sku }}</td>
-                                    <td>{{ $product->product_quantity }}</td>
-                                    <td class="text-right hide_colume">{{ $product->product_value }}</td>
+                                    <td colspan="2">{{ $product->product_name ?? ''  }}</td>
+                                    <td>{{ $product->product_sku ?? ''  }}</td>
+                                    <td>{{ $product->product_quantity ?? '' }}</td>
+                                    <td class="text-right hide_colume">{{ $product->product_value ?? '' }}</td>
                                 </tr>
                                 @php
                                     $totalQty += $product->product_quantity;
@@ -254,8 +254,8 @@
                             <tr class="hide_colume">
                                 <td colspan="2" class="text-right"><p>Total</p></td>
                                 <td></td>
-                                <td><p>{{ $totalQty }}</p></td>
-                                <td class="text-right"><p>Rs.{{ $totalPrice }}</p></td>
+                                <td><p>{{ $totalQty ?? '' }}</p></td>
+                                <td class="text-right"><p>Rs.{{ $totalPrice ?? '' }}</p></td>
                             </tr>
                         </tbody>
                     </table>
@@ -266,9 +266,9 @@
 
                     <h6>If not delivered, Return to:</h6>
 
-                    <p style="font-size: 14px; margin-bottom:0px"><b>Warehouse Name:</b> {{ $orderData->return_sender_name }}
+                    <p style="font-size: 14px; margin-bottom:0px"><b>Warehouse Name:</b> {{ $orderData->return_sender_name ?? '' }}
                     </p>
-                    <p style="font-size: 14px;">{{ $orderData->return_full_address }} {{ $orderData->return_state }} {{ $orderData->return_city }} {{ $orderData->return_pincode }} <br> Phone: {{ $orderData->return_phone }}  </p>
+                    <p style="font-size: 14px;">{{ $orderData->return_full_address ?? '' }} {{ $orderData->return_state ?? ''  }} {{ $orderData->return_city ?? '' }} {{ $orderData->return_pincode ?? '' }} <br> Phone: {{ $orderData->return_phone ?? '' }}  </p>
                 </td>
 
             </tr>
