@@ -481,6 +481,8 @@ class OrderController extends Controller
             ->where('shiparcel_orders.awb_number', $awbNumber)
             ->first();
 
+            // dd($orderData);
+
         if (!$orderData) {
             abort(404, 'Order not found.');
         }
